@@ -19,10 +19,19 @@ function img (attr) {
   return concat(' />', applyAttr(attr, `<${name}`))
 }
 
+function formatPipeList (list) {
+  return list.reduce((acc, str, i) => {
+    acc += `${compile('span', { class: 'params__type' }, [str])}${i < list.length - 1 ? ' | ' : ''}`
+
+    return acc
+  }, '')
+}
+
 module.exports = {
   compile,
   img,
   text,
+  formatPipeList,
   div: compile('div'),
   h1: compile('h1'),
   h2: compile('h2'),
