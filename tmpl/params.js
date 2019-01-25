@@ -49,7 +49,9 @@ function findValidHeaders (params) {
     }, params)
 }
 
-function buildTableHeaders ({ hasName, hasAttrs, isOptional, hasDefault }, _th) {
+function buildTableHeaders (params, _th) {
+  const { hasName, hasAttrs, isOptional, hasDefault } = findValidHeaders(params)
+
   return pipe([
     when(always(hasName), prepend(th({ class: 'params__th--name' }, [text('Name')]))),
     when(always(hasAttrs), concat(th({ class: 'params__th--attributes' }, [text('Attributes')]))),
@@ -86,11 +88,9 @@ function buildTableData (p) {
 }
 
 function params ({ params }) {
-  const validHeaders = findValidHeaders(params)
-
   return table({ class: 'params' }, [
     thead({ class: 'params__thead' }, [
-      tr({ class: 'params__tr' }, buildTableHeaders(validHeaders, th({ class: 'params__th' })))
+      tr({ class: 'params__tr' }, buildTableHeaders(params, th({ class: 'params__th' })))
     ]),
     tbody({ class: 'params__tbody' }, map(p => {
       return tr({ class: 'params__tr' }, buildTableData(p))
