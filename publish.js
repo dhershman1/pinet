@@ -12,13 +12,11 @@ function publish (taffyData, opts, c) {
   let view = new template.Template(path.join(loc, 'tmpl'))
 
   view.layout = 'layout.js'
-  console.log(pinet)
   const children = []
 
   data().each(doclet => {
     if (doclet.kind !== 'package') {
       children.push(container(opts, doclet))
-      // console.log(container(opts, doclet))
     }
   })
 
