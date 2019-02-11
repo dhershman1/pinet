@@ -36,6 +36,7 @@
   "pinet": {
     "title": "Hello there!",
     "lang": "en",
+    "customTags": ["category"],
     "meta": [
       {
         "name": "viewport",
