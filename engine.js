@@ -16,12 +16,16 @@ function text (val) {
 }
 
 function img (attr) {
-  return concat(' />', applyAttr(attr, `<${name}`))
+  return concat(' />', applyAttr(attr, '<img'))
 }
 
-function formatPipeList (list) {
+function meta (attr) {
+  return concat('>', applyAttr(attr, '<meta'))
+}
+
+function formatPipeList (list, char = '|') {
   return list.reduce((acc, str, i) => {
-    acc += `${compile('span', { class: 'params__type' }, [str])}${i < list.length - 1 ? ' | ' : ''}`
+    acc += `${compile('span', { class: 'params__type' }, [str])}${i < list.length - 1 ? ` ${char} ` : ''}`
 
     return acc
   }, '')
@@ -32,6 +36,8 @@ module.exports = {
   img,
   text,
   formatPipeList,
+  meta,
+  span: compile('span'),
   div: compile('div'),
   h1: compile('h1'),
   h2: compile('h2'),
