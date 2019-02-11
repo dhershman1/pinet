@@ -37,8 +37,11 @@ module.exports = {
   text,
   formatPipeList,
   meta,
-  span: compile('span'),
   div: compile('div'),
+  dl: compile('dl'),
+  dt: compile('dt'),
+  dd: compile('dd'),
+  span: compile('span'),
   h1: compile('h1'),
   h2: compile('h2'),
   h3: compile('h3'),
@@ -52,5 +55,7 @@ module.exports = {
   tbody: compile('tbody'),
   td: compile('td'),
   th: compile('th'),
-  tr: compile('tr')
+  tr: compile('tr'),
+  pre: compile('pre'),
+  code: compile('code')
 }
