@@ -1,5 +1,6 @@
 const engine = require('./engine')
 const layout = require('./tmpl/layout')
+const container = require('./tmpl/container')
 const helper = require('jsdoc/util/templateHelper')
 const template = require('jsdoc/template')
 const path = require('path')
@@ -11,12 +12,17 @@ function publish (taffyData, opts, c) {
   let view = new template.Template(path.join(loc, 'tmpl'))
 
   view.layout = 'layout.js'
+  console.log(pinet)
+  const children = []
 
   data().each(doclet => {
-    if (doclet.params) {
-      console.log(doclet.params[0])
+    if (doclet.kind !== 'package') {
+      children.push(container(opts, doclet))
+      // console.log(container(opts, doclet))
     }
   })
+
+  console.log(layout(pinet, children))
 }
 
 module.exports = {
