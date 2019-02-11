@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/dhershman1/pinet#readme",
   "dependencies": {
-    "kyanite": "0.11.1"
+    "kyanite": "0.11.2"
   },
   "devDependencies": {
     "jsdoc": "3.5.5",
