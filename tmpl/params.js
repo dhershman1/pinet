@@ -87,7 +87,7 @@ function buildTableData (p) {
   }, sortedData))
 }
 
-function params ({ params }) {
+function params (params) {
   return table({ class: 'params' }, [
     thead({ class: 'params__thead' }, [
       tr({ class: 'params__tr' }, buildTableHeaders(params, th({ class: 'params__th' })))
