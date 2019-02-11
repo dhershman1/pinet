@@ -16,7 +16,7 @@ function publish (taffyData, opts, c) {
 
   data().each(doclet => {
     if (doclet.kind !== 'package') {
-      children.push(container(opts, doclet))
+      children.push(container(pinet, doclet))
     }
   })
 
