@@ -1,0 +1,98 @@
+:root {
+  --border: rgb(226, 226, 226);
+  --primary: rgb(86, 124, 157);
+  --font: rgb(77, 78, 83);
+}
+
+table {
+  border-collapse: collapse;
+}
+
+code {
+  background: rgb(244, 244, 244);
+  padding: 0.1rem 0.5rem;
+}
+
+.container {
+  color: var(--font);
+  width: 75%;
+  margin: auto;
+}
+
+.wrapper {
+  margin-bottom: 0.7rem;
+}
+
+.wrapper h3 {
+  margin-bottom: 0.1rem;
+}
+
+.title {
+  background-color: var(--primary);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+  0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  color: #FFF;
+  margin-top: 0;
+  padding: 0.75rem;
+}
+
+.details {
+  border-left: 3px solid var(--border);
+  padding-left: 0.3rem;
+}
+
+.dummy {
+  list-style: none;
+}
+
+.details__tag {
+  padding-left: 0.5rem;
+  width: auto;
+  float: left;
+}
+
+.details__data {
+  margin-left: 4rem;
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+
+.params {
+  border: 1px solid var(--border);
+  width: 100%;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+  0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+.params code {
+  white-space: pre;
+}
+
+.params__td--name code {
+  font-size: 100%;
+}
+
+.params__tr {
+  text-align: center;
+}
+
+.params__th {
+  padding: 0.7rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.params__tbody tr {
+  border-bottom: 1px solid var(--border);
+}
+
+.params__td {
+  padding: 0.7rem;
+}
+
+.params__type {
+  color: var(--primary);
+}
+
+.params__td--optional {
+  color: var(--primary);
+}

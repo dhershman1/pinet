@@ -5,10 +5,10 @@ exports.defineTags = function (dictionary) {
       doclet.category = tag.value
     }
   })
-  dictionary.defineTag('sig', {
+  dictionary.defineTag('signature', {
     mustHaveValue: true,
     onTagged (doclet, tag) {
-      doclet.sig = tag.value.split(/\r|\n|\n\r/g)
+      doclet.signature = tag.value.split(/\r|\n|\n\r/g)
     }
   })
 }

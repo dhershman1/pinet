@@ -1,5 +1,5 @@
 const { capitalize, concat, map } = require('kyanite')
-const { dl, dt, dd, text } = require('../engine')
+const { ul, dl, dt, dd, li, text } = require('../engine')
 
 function details (customTags = [], doclet) {
   const list = ['since', ...customTags]
@@ -7,7 +7,9 @@ function details (customTags = [], doclet) {
   return dl({ class: 'details' }, map(name =>
     concat(
       dd({ class: 'details__data' }, [
-        text(doclet[name])
+        ul({ class: 'dummy' }, [
+          li({}, [text(doclet[name])])
+        ])
       ]),
       dt({ class: 'details__tag' }, [
         text(`${capitalize(name)}:`)

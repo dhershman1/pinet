@@ -23,6 +23,10 @@ function meta (attr) {
   return concat('>', applyAttr(attr, '<meta'))
 }
 
+function link (attr) {
+  return concat('>', applyAttr(attr, '<link'))
+}
+
 function formatPipeList (list, char = '|') {
   return list.reduce((acc, str, i) => {
     acc += `${compile('span', { class: 'params__type' }, [str])}${i < list.length - 1 ? ` ${char} ` : ''}`
@@ -37,6 +41,7 @@ module.exports = {
   text,
   formatPipeList,
   meta,
+  link,
   div: compile('div'),
   dl: compile('dl'),
   dt: compile('dt'),
@@ -57,5 +62,8 @@ module.exports = {
   th: compile('th'),
   tr: compile('tr'),
   pre: compile('pre'),
-  code: compile('code')
+  code: compile('code'),
+  ul: compile('ul'),
+  li: compile('li'),
+  section: compile('section')
 }

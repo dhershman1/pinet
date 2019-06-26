@@ -4,6 +4,7 @@ const container = require('./tmpl/container')
 const helper = require('jsdoc/util/templateHelper')
 const template = require('jsdoc/template')
 const path = require('path')
+const fs = require('fs')
 
 function publish (taffyData, opts, c) {
   const loc = path.normalize(opts.template)
@@ -15,12 +16,22 @@ function publish (taffyData, opts, c) {
   const children = []
 
   data().each(doclet => {
+    // console.log(doclet)
     if (doclet.kind !== 'package') {
       children.push(container(pinet, doclet))
     }
   })
 
-  console.log(layout(pinet, children))
+  // console.log(layout(pinet, children))
+
+  fs.writeFile('index.html', layout(pinet, children), err => {
+    if (err) {
+      console.error(err)
+      throw err
+    }
+
+    console.log('Write Finished')
+  })
 }
 
 module.exports = {

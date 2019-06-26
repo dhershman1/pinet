@@ -1,5 +1,5 @@
 const { concat } = require('kyanite')
-const { compile, meta } = require('../engine')
+const { compile, link, main, meta } = require('../engine')
 
 function buildMeta (metaArr) {
   if (!metaArr) {
@@ -13,9 +13,12 @@ function layout (opts, children = []) {
   return concat(compile('html', { lang: opts.lang || 'en' }, [
     compile('head', {}, [
       ...buildMeta(opts.meta),
-      compile('title', {}, opts.title || 'Documentation')
+      compile('title', {}, opts.title || 'Documentation'),
+      link({ href: 'static/css/main.css', rel: 'stylesheet' }),
+      link({ href: 'static/css/prettify.css', rel: 'stylesheet' }),
+      link({ href: 'static/css/hl.css', rel: 'stylesheet' })
     ]),
-    compile('body', { id: 'root' }, children)
+    compile('body', { id: 'root' }, main({ class: 'container' }, children))
   ]), '<!DOCTYPE html>')
 }
 

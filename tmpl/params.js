@@ -18,7 +18,7 @@ const {
   when,
   whole
 } = require('kyanite')
-const { formatPipeList, table, tbody, td, text, th, thead, tr } = require('../engine')
+const { code, formatPipeList, table, tbody, td, text, th, thead, tr } = require('../engine')
 
 // This can probably be replaced now
 function findValidHeaders (params) {
@@ -53,12 +53,12 @@ function buildTableHeaders (params, _th) {
   const { hasName, hasAttrs, isOptional, hasDefault } = findValidHeaders(params)
 
   return pipe([
-    when(always(hasName), prepend(th({ class: 'params__th--name' }, [text('Name')]))),
-    when(always(hasAttrs), concat(th({ class: 'params__th--attributes' }, [text('Attributes')]))),
-    when(always(isOptional), concat(th({ class: 'params__th--optional' }, [text('Optional?')]))),
-    when(always(hasDefault), concat(th({ class: 'params__th--default' }, [text('Default')]))),
-    concat(th({ class: 'params__th--description' }, [text('Description')]))
-  ], [th({ class: 'params__th--type' }, [text('Type')])])
+    when(always(hasName), prepend(th({ class: 'params__th params__th--name' }, [text('Name')]))),
+    when(always(hasAttrs), concat(th({ class: 'params__th params__th--attributes' }, [text('Attributes')]))),
+    when(always(isOptional), concat(th({ class: 'params__th params__th--optional' }, [text('Optional?')]))),
+    when(always(hasDefault), concat(th({ class: 'params__th params__th--default' }, [text('Default')]))),
+    concat(th({ class: 'params__th params__th--description' }, [text('Description')]))
+  ], [th({ class: 'params__th params__th--type' }, [text('Type')])])
 }
 
 function buildTableData (p) {
@@ -77,13 +77,17 @@ function buildTableData (p) {
   }, {}, ['name', 'type', 'nullable', 'variable', 'optional', 'defaultvalue', 'description'])
 
   return Object.values(plan({
-    name: compose(td({ class: 'params__td--name' }), ensureArray),
-    type: when(prop('names'), pipe([prop('names'), formatPipeList, td({ class: 'params__td--type' })])),
-    nullable: when(identity, compose(td({ class: 'params__td--nullable' }), ensureArray)),
-    variable: when(identity, compose(td({ class: 'params__td--variable' }), ensureArray)),
+    name: x => {
+      const val = ensureArray(x)
+      // compose(td({ class: 'params__td params__td--name' }), ensureArray)
+      return td({ class: 'params__td params__td--name' }, [code({}, val)])
+    },
+    type: when(prop('names'), pipe([prop('names'), formatPipeList, td({ class: 'params__td params__td--type' })])),
+    nullable: when(identity, compose(td({ class: 'params__td params__td--nullable' }), ensureArray)),
+    variable: when(identity, compose(td({ class: 'params__td params__td--variable' }), ensureArray)),
     optional: compose(td({ class: 'params__td--optional' }), ensureArray),
-    defaultvalue: when(identity, compose(td({ class: 'params__td--defaultvalue' }), ensureArray)),
-    description: when(identity, compose(td({ class: 'params__td--description' }), ensureArray))
+    defaultvalue: when(identity, compose(td({ class: 'params__td params__td--defaultvalue' }), ensureArray)),
+    description: when(identity, compose(td({ class: 'params__td params__td--description' }), ensureArray))
   }, sortedData))
 }
 
