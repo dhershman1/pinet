@@ -1,5 +1,5 @@
-const { concat } = require('kyanite')
-const { aside, div, compile, link, main, meta, text, footer } = require('../engine')
+const { concat, map } = require('kyanite')
+const { a, aside, compile, div, footer, li, link, main, meta, p, span, text, ul } = require('../engine')
 
 function buildMeta (metaArr) {
   if (!metaArr) {
@@ -9,7 +9,18 @@ function buildMeta (metaArr) {
   return metaArr.map(meta)
 }
 
-function layout (opts, children = []) {
+function buildNav (nav) {
+  return ul({ class: 'nav' }, map(({ name, cat }) => {
+    return li({ class: 'nav__item' }, [
+      a({ class: 'nav__link', href: `#${name}` }, [
+        text(name),
+        span({ class: 'nav__type tag' }, [text(cat)])
+      ])
+    ])
+  }, nav))
+}
+
+function layout (opts, children = [], nav = []) {
   return concat(compile('html', { lang: opts.lang || 'en' }, [
     compile('head', {}, [
       ...buildMeta(opts.meta),
@@ -19,7 +30,7 @@ function layout (opts, children = []) {
       link({ href: 'static/css/hl.css', rel: 'stylesheet' })
     ]),
     compile('body', { id: 'root' }, div({ class: 'grid' }, [
-      aside({}, [text('420 swag')]),
+      aside({}, buildNav(nav)),
       main({}, children),
       footer({}, [text('Copyright Dustin Hershman 2019')])
     ]))

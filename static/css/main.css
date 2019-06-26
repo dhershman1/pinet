@@ -26,7 +26,7 @@ code {
   height: 100%;
   grid-template-areas: 'aside main'
                        'aside foot';
-  grid-template-columns: 10% 90%;
+  grid-template-columns: 15% 85%;
 }
 
 aside {
@@ -34,9 +34,11 @@ aside {
   left: 0;
   bottom: 0;
   height: 100%;
-  width: 11%;
+  width: 16%;
   grid-area: aside;
   overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 0.5rem 0;
   border-right: 3px solid var(--primary);
 }
 
@@ -74,13 +76,34 @@ footer {
   padding: 0.75rem;
 }
 
+.title__params {
+  color: var(--primary-lighter);
+}
+
 .details {
   border-left: 3px solid var(--border);
   padding-left: 0.3rem;
 }
 
-.dummy {
+.dummy, .nav {
   list-style: none;
+}
+
+.nav {
+  padding-left: 0;
+}
+
+.nav__type {
+  float: right;
+}
+
+.nav__item {
+  padding: 0.3rem 0.7rem;
+}
+
+.nav__link {
+  color: var(--primary);
+  text-decoration: none;
 }
 
 .details__tag {

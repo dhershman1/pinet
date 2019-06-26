@@ -18,7 +18,7 @@
     "template": "./",
     "destination": "./docs/",
     "recurse": true,
-    "verbose": true
+    "verbose": false
   },
   "markdown": {
     "parser": "gfm",

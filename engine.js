@@ -42,6 +42,7 @@ module.exports = {
   formatPipeList,
   meta,
   link,
+  a: compile('a'),
   div: compile('div'),
   dl: compile('dl'),
   dt: compile('dt'),

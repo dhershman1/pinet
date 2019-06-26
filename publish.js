@@ -14,17 +14,19 @@ function publish (taffyData, opts, c) {
 
   view.layout = 'layout.js'
   const children = []
+  const navList = []
+
 
   data().each(doclet => {
-    // console.log(doclet)
     if (doclet.kind !== 'package') {
+      navList.push({ name: doclet.name, cat: doclet.category })
       children.push(container(pinet, doclet))
     }
   })
 
   // console.log(layout(pinet, children))
 
-  fs.writeFile('index.html', layout(pinet, children), err => {
+  fs.writeFile('index.html', layout(pinet, children, navList), err => {
     if (err) {
       console.error(err)
       throw err
