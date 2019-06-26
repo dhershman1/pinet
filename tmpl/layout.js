@@ -1,5 +1,5 @@
 const { concat } = require('kyanite')
-const { compile, link, main, meta } = require('../engine')
+const { aside, div, compile, link, main, meta, text, footer } = require('../engine')
 
 function buildMeta (metaArr) {
   if (!metaArr) {
@@ -15,10 +15,14 @@ function layout (opts, children = []) {
       ...buildMeta(opts.meta),
       compile('title', {}, opts.title || 'Documentation'),
       link({ href: 'static/css/main.css', rel: 'stylesheet' }),
-      link({ href: 'static/css/prettify.css', rel: 'stylesheet' }),
+      // link({ href: 'static/css/prettify.css', rel: 'stylesheet' }),
       link({ href: 'static/css/hl.css', rel: 'stylesheet' })
     ]),
-    compile('body', { id: 'root' }, main({ class: 'container' }, children))
+    compile('body', { id: 'root' }, div({ class: 'grid' }, [
+      aside({}, [text('420 swag')]),
+      main({}, children),
+      footer({}, [text('Copyright Dustin Hershman 2019')])
+    ]))
   ]), '<!DOCTYPE html>')
 }
 

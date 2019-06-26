@@ -11,4 +11,11 @@ exports.defineTags = function (dictionary) {
       doclet.signature = tag.value.split(/\r|\n|\n\r/g)
     }
   })
+
+  dictionary.defineTag('sig', {
+    mustHaveValue: true,
+    onTagged (doclet, tag) {
+      doclet.signature = tag.value.split(/\r|\n|\n\r/g)
+    }
+  })
 }

@@ -65,5 +65,7 @@ module.exports = {
   code: compile('code'),
   ul: compile('ul'),
   li: compile('li'),
-  section: compile('section')
+  section: compile('section'),
+  aside: compile('aside'),
+  footer: compile('footer')
 }
