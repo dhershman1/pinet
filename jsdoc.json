@@ -35,6 +35,13 @@
   },
   "pinet": {
     "title": "Testing -- Documentation",
+    "packageJson": "kyanite/package.json",
+    "links": [
+      {
+        "name": "Home",
+        "link": "https://github.com/dhershman1/kyanite"
+      }
+    ],
     "lang": "en",
     "customTags": ["category", "signature"],
     "meta": [

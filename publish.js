@@ -7,12 +7,12 @@ const path = require('path')
 const fs = require('fs')
 
 function publish (taffyData, opts, c) {
-  const loc = path.normalize(opts.template)
+  // const loc = path.normalize(opts.template)
   const data = helper.prune(taffyData)
   const pinet = Object.assign({}, { classes: {} }, env.conf.pinet)
-  let view = new template.Template(path.join(loc, 'tmpl'))
+  // const view = new template.Template(path.join(loc, 'tmpl'))
 
-  view.layout = 'layout.js'
+  // view.layout = 'layout.js'
   const children = []
   const navList = []
 
@@ -23,8 +23,6 @@ function publish (taffyData, opts, c) {
       children.push(container(pinet, doclet))
     }
   })
-
-  // console.log(layout(pinet, children))
 
   fs.writeFile('index.html', layout(pinet, children, navList), err => {
     if (err) {

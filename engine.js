@@ -68,5 +68,6 @@ module.exports = {
   li: compile('li'),
   section: compile('section'),
   aside: compile('aside'),
-  footer: compile('footer')
+  footer: compile('footer'),
+  header: compile('header')
 }
