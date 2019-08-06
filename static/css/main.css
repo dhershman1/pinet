@@ -94,6 +94,7 @@ main {
 footer {
   grid-area: foot;
   padding: 0.5rem 1rem;
+  background-color: #FFF;
   text-align: center;
   border-top: 1px solid var(--border);
 }
