@@ -1,6 +1,6 @@
 const { concat } = require('kyanite')
 const navbar = require('./navbar')
-const { compile, div, footer, link, main, meta, text } = require('../engine')
+const { compile, div, footer, input, label, link, main, meta, text } = require('../engine')
 
 function buildMeta (metaArr) {
   if (!metaArr) {
@@ -21,6 +21,11 @@ function layout (opts) {
         link({ href: 'static/css/hl.css', rel: 'stylesheet' })
       ]),
       compile('body', { id: 'root' }, div({ class: 'grid' }, [
+        input({ type: 'checkbox', id: 'nav-trigger', class: 'nav-trigger' }),
+        label({ for: 'nav-trigger', class: 'navicon-button x' }, [
+          div({ class: 'navicon' }, [])
+        ]),
+        label({ for: 'nav-trigger', class: 'overlay' }, []),
         navbar(nav, opts),
         main({}, html || children),
         footer({}, [text('Powered by Pinet')]),

@@ -36,7 +36,7 @@ function buildPageNav (packageJson, links) {
 }
 
 function navbar (nav, { links, packageJson }) {
-  return aside({}, [
+  return aside({ class: 'side-nav' }, [
     buildPageNav(packageJson, links),
     compile('input', {
       class: 'filter',
