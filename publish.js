@@ -7,7 +7,6 @@ const fs = require('fs-extra')
 
 function publish (taffyData, opts, c) {
   console.time('publish')
-  // const loc = path.normalize(opts.template)
   const data = helper.prune(taffyData)
   const pinet = Object.assign({}, { classes: {} }, env.conf.pinet, { hasHome: Boolean(opts.readme) })
   const render = layout(pinet)
@@ -18,7 +17,6 @@ function publish (taffyData, opts, c) {
   fs.mkdirp(opts.destination)
     .then(() => {
       data().each(doclet => {
-        // console.log(doclet)
         if (doclet.kind !== 'package') {
           navList.push({ name: doclet.name, cat: doclet.category })
           children.push(container(pinet, doclet))
