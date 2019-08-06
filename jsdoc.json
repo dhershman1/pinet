@@ -11,7 +11,7 @@
   },
   "sourceType": "module",
   "plugins": [
-    "example/custom-tags/index.js"
+    "tags.js"
   ],
   "opts": {
     "encoding": "utf8",
