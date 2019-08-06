@@ -2,7 +2,7 @@
   --border: hsl(0, 0%, 89%);
   --primary: hsl(208, 29%, 48%);
   --primary-lighter: hsl(208, 29%, 88%);
-  --primary-darker: hsl(208, 29%, 38%)
+  --primary-darker: hsl(208, 29%, 38%);
   --font: hsl(230, 4%, 31%);
 }
 
@@ -29,66 +29,9 @@ code {
   display: grid;
   font-size: 16px;
   height: 100%;
-  grid-template-areas: 'header header'
-                       'aside main'
+  grid-template-areas: 'aside main'
                        'aside foot';
   grid-template-columns: 15% 85%;
-}
-
-header {
-  position: fixed;
-  margin-bottom: 1rem;
-  grid-area: header;
-  /* padding: 0.5rem 1rem; */
-  width: 100%;
-  background-color: var(--primary);
-}
-
-.header-nav {
-  box-sizing: border-box;
-  float: left;
-  padding-left: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.header-nav__item {
-  float: left;
-  list-style: none;
-  position: relative;
-  box-sizing: border-box;
-  display: block;
-  border-left: 2px solid var(--border);
-}
-
-.header-nav__link {
-  position: relative;
-  padding: 1rem;
-  display: block;
-  text-decoration: none;
-  color: var(--primary-lighter);
-  font-size: 16px;
-}
-
-.header-nav__link:hover {
-  transition: all 0.2s ease;
-  color: #FFF;
-}
-
-.header-nav__link--active {
-  background-color: var(--primary-darker);
-}
-
-.header-nav__title {
-  float: left;
-  padding: 1rem;
-  /* margin: 0; */
-  font-size: 18px;
-  color: var(--primary-lighter);
-}
-
-.header-nav__version {
-  font-size: 16px;
 }
 
 aside {
@@ -96,18 +39,47 @@ aside {
   left: 0;
   bottom: 0;
   height: 100%;
-  width: 16%;
+  width: 15%;
   grid-area: aside;
   overflow-y: scroll;
   overflow-x: hidden;
-  top: 3.5rem;
-  border-right: 3px solid var(--primary);
+  border-right: 2px solid var(--primary);
+}
+
+.pagenav {
+  text-align: center;
+  padding: 0.3rem 0.7rem;
+  background-color: var(--primary);
+}
+
+.pagenav__title {
+  color: #FFF;
+  font-size: 18px;
+}
+
+.pagenav__version {
+  font-size: 14px;
+}
+
+.pagenav__link {
+  text-decoration: none;
+  padding: 0.3rem;
+  color: var(--primary-lighter);
+  border-right: 2px solid #FFF;
+}
+
+.pagenav__link:hover {
+  transition: 0.2s ease-in;
+  color: var(--font);
+}
+
+.pagenav__link:last-child {
+  border-right: none;
 }
 
 main {
   grid-area: main;
-  margin-top: 4rem;
-  padding: 0 2rem 2rem;
+  padding: 0 2rem 2rem 0.5rem;
   height: 100%;
 }
 
@@ -179,6 +151,11 @@ footer {
 .nav__link {
   color: var(--primary);
   text-decoration: none;
+}
+
+.nav__link:hover {
+  transition: 0.2s ease-in;
+  color: var(--font);
 }
 
 .details__tag {

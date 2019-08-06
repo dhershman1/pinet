@@ -2,36 +2,39 @@ const engine = require('./engine')
 const layout = require('./tmpl/layout')
 const container = require('./tmpl/container')
 const helper = require('jsdoc/util/templateHelper')
-const template = require('jsdoc/template')
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
 
 function publish (taffyData, opts, c) {
+  console.time('publish')
   // const loc = path.normalize(opts.template)
   const data = helper.prune(taffyData)
-  const pinet = Object.assign({}, { classes: {} }, env.conf.pinet)
-  // const view = new template.Template(path.join(loc, 'tmpl'))
-
-  // view.layout = 'layout.js'
+  const pinet = Object.assign({}, { classes: {} }, env.conf.pinet, { hasHome: Boolean(opts.readme) })
+  const render = layout(pinet)
   const children = []
   const navList = []
 
 
-  data().each(doclet => {
-    if (doclet.kind !== 'package') {
-      navList.push({ name: doclet.name, cat: doclet.category })
-      children.push(container(pinet, doclet))
-    }
-  })
+  fs.mkdirp(opts.destination)
+    .then(() => {
+      data().each(doclet => {
+        // console.log(doclet)
+        if (doclet.kind !== 'package') {
+          navList.push({ name: doclet.name, cat: doclet.category })
+          children.push(container(pinet, doclet))
+        }
+      })
 
-  fs.writeFile('index.html', layout(pinet, children, navList), err => {
-    if (err) {
-      console.error(err)
-      throw err
-    }
-
-    console.log('Write Finished')
-  })
+      return fs.writeFile(path.join(opts.destination, 'documentation.html'), render(children, navList))
+    })
+    .then(() =>
+      fs.writeFile(path.join(opts.destination, 'index.html'), render([], navList, opts.readme)))
+    .then(() =>
+      fs.copy('static', path.join(opts.destination, 'static')))
+    .then(() => {
+      console.log('Write Finished')
+      console.timeEnd('publish')
+    })
 }
 
 module.exports = {

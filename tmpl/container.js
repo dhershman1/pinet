@@ -17,7 +17,7 @@ function optional (fn, type, data) {
 }
 
 function container (opts, doclet) {
-  return div({ class: 'wrapper' }, [
+  return div({ class: 'wrapper', id: doclet.name }, [
     title(doclet),
     details(opts.customTags, doclet),
     p({ class: 'description' }, [text(doclet.description)]),

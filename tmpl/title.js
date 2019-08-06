@@ -8,7 +8,7 @@ function paramCommaList (params) {
 }
 
 function title ({ name, params, returns }) {
-  return h3({ class: 'title', id: name }, [
+  return h3({ class: 'title' }, [
     text(name),
     span({ class: 'title__params' }, [
       text('('),
