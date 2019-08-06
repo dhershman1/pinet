@@ -1,5 +1,5 @@
 const { always, branch, capitalize, compose, concat, eq, pipe, reduced, when, map } = require('kyanite/dist/kyanite')
-const { ul, dl, dt, dd, li, code, span, text } = require('../engine')
+const { ul, dl, dt, dd, li, code, section, span, text } = require('../engine')
 
 function details (customTags = [], doclet) {
   const list = ['since', ...customTags]
@@ -21,9 +21,8 @@ function details (customTags = [], doclet) {
     ])
   }
 
-  return dl({ class: 'details' }, map(name => {
-
-    return concat(
+  return section({ class: 'details' }, [dl({}, map(name =>
+    concat(
       pipe([
         when(eq('category'), done(createDD(false))),
         when(eq('signature'), done(createDD(true))),
@@ -33,8 +32,7 @@ function details (customTags = [], doclet) {
         text(`${capitalize(name)}:`)
       ])
     )
-  }
-  , list))
+  , list))])
 }
 
 module.exports = details

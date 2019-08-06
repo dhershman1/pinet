@@ -1,4 +1,4 @@
-const { h3, span, text } = require('../engine')
+const { h2, span, text } = require('../engine')
 const { addIndex, concat, reduce, map, prop } = require('kyanite')
 
 function paramCommaList (params) {
@@ -8,7 +8,7 @@ function paramCommaList (params) {
 }
 
 function title ({ name, params, returns }) {
-  return h3({ class: 'title' }, [
+  return h2({ class: 'title section__title' }, [
     text(name),
     span({ class: 'title__params' }, [
       text('('),

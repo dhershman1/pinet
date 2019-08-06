@@ -92,7 +92,7 @@ function buildTableData (p) {
 }
 
 function params (params) {
-  return table({ class: 'params' }, [
+  return table({ class: 'params__table' }, [
     thead({ class: 'params__thead' }, [
       tr({ class: 'params__tr' }, buildTableHeaders(params, th({ class: 'params__th' })))
     ]),

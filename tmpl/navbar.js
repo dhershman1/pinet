@@ -6,7 +6,7 @@ function buildFunctionNav (nav) {
   return ul({ class: 'nav' }, map(({ name, cat }) => {
     return li({ class: 'nav__item', 'data-cat': cat }, [
       a({ class: 'nav__link', href: `documentation.html#${name}` }, [
-        text(name),
+        span({ class: 'nav__name' }, [text(name)]),
         span({ class: 'nav__type tag' }, [text(cat)])
       ])
     ])
