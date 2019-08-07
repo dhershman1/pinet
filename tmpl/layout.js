@@ -1,6 +1,6 @@
 const { concat } = require('kyanite')
 const navbar = require('./navbar')
-const { compile, div, footer, input, label, link, main, meta, text } = require('../engine')
+const { a, compile, div, footer, input, label, link, main, meta, text } = require('../engine')
 
 function buildMeta (metaArr) {
   if (!metaArr) {
@@ -28,7 +28,10 @@ function layout (opts) {
         label({ for: 'nav-trigger', class: 'overlay' }, []),
         navbar(nav, opts),
         main({}, html || children),
-        footer({}, [text('Powered by Pinet')]),
+        footer({}, [
+          text('Powered by '),
+          a({ href: 'https://github.com/dhershman1/pinet' }, [text('Pinet')])
+        ]),
         compile('script', { src: 'static/js/search.js' }, [])
       ]))
     ]), '<!DOCTYPE html>')
