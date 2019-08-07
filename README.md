@@ -2,6 +2,8 @@
 
 Yet another documentation template for jsdocs
 
+[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
+
 ## Why?
 
 I had already used docdash but had to fork and make some hefty changes to get it _just_ the way I wanted it, which led me to the route of why not sport my own?

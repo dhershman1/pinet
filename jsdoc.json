@@ -5,7 +5,7 @@
   "source": {
     "includePattern": ".js$",
     "include": [
-      "example",
+      "example/fixture/foo.js",
       "./README.md"
     ]
   },
