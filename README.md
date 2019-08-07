@@ -10,9 +10,9 @@ I had already used docdash but had to fork and make some hefty changes to get it
 
 And so Pinet came to pass! It has it's own built in template engine!
 
-## Current State: In Development
+## Current State: Prepping For a Beta Release
 
-Pinet has just started life, so I recommend avoiding usage right now.
+Pinet is getting closer to releasing a 0.1.0 version! Feel free to play around with the code with your projects and report any strange activity or bugs you might find, I appreciate it!
 
 ## Features
 
