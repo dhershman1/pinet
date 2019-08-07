@@ -5,6 +5,8 @@ const helper = require('jsdoc/util/templateHelper')
 const path = require('path')
 const fs = require('fs-extra')
 
+/* global env */
+
 function publish (taffyData, opts, c) {
   console.time('publish')
   const data = helper.prune(taffyData)
@@ -12,7 +14,6 @@ function publish (taffyData, opts, c) {
   const render = layout(pinet)
   const children = []
   const navList = []
-
 
   fs.mkdirp(opts.destination)
     .then(() => {
