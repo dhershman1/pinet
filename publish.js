@@ -7,7 +7,7 @@ const fs = require('fs-extra')
 
 /* global env */
 
-function publish (taffyData, opts, c) {
+function publish (taffyData, opts) {
   console.time('publish')
   const data = helper.prune(taffyData)
   const pinet = Object.assign({}, { classes: {} }, env.conf.pinet, { hasHome: Boolean(opts.readme) })

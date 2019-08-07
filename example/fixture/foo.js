@@ -2,9 +2,9 @@
 /**
  * @name subtract
  * @function
- * @category Math
  * @since v0.1.0
  * @description A foo subtractor
+ * @category Math
  * @signature Number -> Number -> Number
  * @param {Number} a The number to subtract from
  * @param {Number} b The number to subtract with
