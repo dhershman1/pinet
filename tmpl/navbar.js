@@ -31,7 +31,7 @@ function buildPageNav (packageJson, links) {
         href: link
       },
       [text(name)]),
-      concat(links, [{ name: 'Home', link: 'index.html' }, { name: 'Documentation', link: 'documentation.html' }])))
+    concat(links, [{ name: 'Home', link: 'index.html' }, { name: 'Documentation', link: 'documentation.html' }])))
   ])
 }
 

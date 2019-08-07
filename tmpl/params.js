@@ -42,11 +42,11 @@ function findValidHeaders (params) {
       hasDefault: passes([acc.hasDefault, typeof val.defaultvalue !== 'undefined'])
     })
   }, {
-      hasName: false,
-      hasAttrs: false,
-      isOptional: false,
-      hasDefault: false
-    }, params)
+    hasName: false,
+    hasAttrs: false,
+    isOptional: false,
+    hasDefault: false
+  }, params)
 }
 
 function buildTableHeaders (params, _th) {
