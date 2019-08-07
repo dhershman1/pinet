@@ -5,7 +5,7 @@
   "source": {
     "includePattern": ".js$",
     "include": [
-      "example/fixture/foo.js",
+      "node_modules/kyanite/src",
       "./README.md"
     ]
   },
