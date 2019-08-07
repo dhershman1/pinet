@@ -12,6 +12,13 @@ And so Pinet came to pass! It has it's own built in template engine!
 
 Pinet has just started life, so I recommend avoiding usage right now.
 
+## Features
+
+- Modern, minimalist design for easy to read flow
+- Mobile responsive
+- Built in support for `category` and `signature` tags
+- More to come
+
 ## Template Engine
 
 The built in engine is based around using functions!
