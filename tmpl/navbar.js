@@ -12,7 +12,7 @@ function buildFunctionNav (nav) {
   }, nav))
 }
 
-function buildPageNav (packageJson, links) {
+function buildPageNav (packageJson, links = []) {
   const pkg = packageJson || { name: 'Unknown', version: '0.0.0' }
 
   return div({ class: 'pagenav' }, [

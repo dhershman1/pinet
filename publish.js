@@ -32,7 +32,7 @@ function publish (taffyData, opts) {
     .then(() =>
       fs.writeFile(path.join(opts.destination, 'index.html'), render([], navList, pkg, opts.readme)))
     .then(() =>
-      fs.copy('static', path.join(opts.destination, 'static')))
+      fs.copy(path.join(__dirname, 'static'), path.join(opts.destination, 'static')))
     .then(() => {
       console.log('Write Finished')
       console.timeEnd('publish')
