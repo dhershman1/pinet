@@ -70,3 +70,15 @@ node_modules/.bin/jsdoc -c jsdoc.json
 ```
 
 This will generate a new set of files to give you html rendered documentation
+
+## Templating Engine
+
+The actual engine behind Pinet, is importable for your own use as well. You can bring it in and use it to generate all kinds of html and functionality.
+
+```js
+import { compile, p, text } from 'pinet'
+
+compile('span', { data: 'testing' }, [
+  p({}, [text('Hello!')])
+]) // => <span data="testing"><p>Hello!</p></span>
+```
