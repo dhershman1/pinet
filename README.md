@@ -4,27 +4,69 @@ Yet another documentation template for jsdocs
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 
-## Why?
-
-I had already used docdash but had to fork and make some hefty changes to get it _just_ the way I wanted it, which led me to the route of why not sport my own?
-
-And so Pinet came to pass! It has it's own built in template engine!
-
-## Current State: Prepping For a Beta Release
-
-Pinet is getting closer to releasing a 0.1.0 version! Feel free to play around with the code with your projects and report any strange activity or bugs you might find, I appreciate it!
-
 ![pinet](https://user-images.githubusercontent.com/8997380/63355490-336ce100-c334-11e9-88ce-b6a4643ed18a.png)
 
-## Features
+## Install
 
-- Modern, minimalist design for easy to read flow
-- Mobile responsive
-- Built in support for `category` and `signature` tags
-- More to come
+```cli
+npm i -D pinet
+```
 
-## Template Engine
+## Custom Tags
 
-The built in engine is based around using functions!
+Pinet comes with some custom tag support you can use, within your jsdoc config simply tell it to use pinets tags.js like so:
 
-_Example coming soon_
+```json
+"plugins": [
+    "node_modules/pinet/tags.js"
+  ],
+```
+
+Currently `category` and `sig/signatue` tags are supported here. Feel free to open an issue to request other custom tags you may want to see!
+
+## Options
+
+- `title` - `String`: This is the title of the pages for your docs
+- `links` - `Array`: An array of objects to add to the nav, each object needs a `name` and `link` property
+- `lang` - `String`: The value to set the `lang` attribute to on the `html` tag
+- `customTags` - `Array`: An array of strings which should be the tag names you want pinet to consider
+- `meta` - `Array`: An array of meta objects each object is built out into a meta element the properties provided will be turned into attributes
+
+Example:
+
+```json
+"pinet": {
+  "title": "Testing -- Documentation",
+  "links": [
+    {
+      "name": "Github",
+      "link": "https://github.com/dhershman1/kyanite"
+    }
+  ],
+  "lang": "en",
+  "customTags": [
+    "category",
+    "signature"
+  ],
+  "meta": [
+    {
+      "name": "viewport",
+      "content": "width=device-width, initial-scale=1.0"
+    },
+    {
+      "charset": "UTF-8"
+    }
+  ]
+}
+```
+
+## Usage
+
+Setup a jsdoc.json file with your options and settings. It is Highly recommended you provide not only the source folders for your js files but **also** a path to the `readme` and `package.json` so that small bits of information can be properly stored
+
+Than use the jsdoc cli and point it to your config json:
+```cli
+node_modules/.bin/jsdoc -c jsdoc.json
+```
+
+This will generate a new set of files to give you html rendered documentation
