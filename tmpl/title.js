@@ -11,10 +11,6 @@ function paramCommaList (params) {
   return _reduce((str, acc, i) => concat(`${str}${i < params.length - 1 ? ', ' : ''}`, acc), '', params)
 }
 
-function pipeList (list) {
-
-}
-
 function title ({ name, kind, params = [], returns = [] }) {
   // console.log(returns)
   return h2({ class: 'title section__title' }, [
