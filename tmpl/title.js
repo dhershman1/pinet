@@ -4,7 +4,7 @@ const { addIndex, concat, reduce, map, prop } = require('kyanite')
 function paramCommaList (params) {
   const _reduce = addIndex(reduce)
 
-  return _reduce((str, acc, i) => concat(`${str}${i < params.length - 1 ? `, ` : ''}`, acc), '', params)
+  return _reduce((str, acc, i) => concat(`${str}${i < params.length - 1 ? ', ' : ''}`, acc), '', params)
 }
 
 function title ({ name, params, returns }) {
