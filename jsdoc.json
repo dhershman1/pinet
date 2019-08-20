@@ -3,9 +3,9 @@
     "allowUnknownTags": true
   },
   "source": {
-    "includePattern": ".js$",
     "include": [
       "node_modules/kyanite/src",
+      "node_modules/kyanite/package.json",
       "./README.md"
     ]
   },
@@ -27,7 +27,6 @@
   },
   "pinet": {
     "title": "Testing -- Documentation",
-    "packageJson": "kyanite/package.json",
     "links": [
       {
         "name": "Github",

@@ -11,9 +11,10 @@ function publish (taffyData, opts) {
   console.time('publish')
   const data = helper.prune(taffyData)
   const pinet = Object.assign({}, { classes: {} }, env.conf.pinet, { hasHome: Boolean(opts.readme) })
-  const render = layout(pinet)
   const children = []
   const navList = []
+  const render = layout(pinet)
+  let pkg = null
 
   fs.mkdirp(opts.destination)
     .then(() => {
@@ -21,19 +22,22 @@ function publish (taffyData, opts) {
         if (doclet.kind !== 'package') {
           navList.push({ name: doclet.name, cat: doclet.category })
           children.push(container(pinet, doclet))
+        } else {
+          pkg = doclet
         }
       })
 
-      return fs.writeFile(path.join(opts.destination, 'documentation.html'), render(children, navList))
+      return fs.writeFile(path.join(opts.destination, 'documentation.html'), render(children, navList, pkg))
     })
     .then(() =>
-      fs.writeFile(path.join(opts.destination, 'index.html'), render([], navList, opts.readme)))
+      fs.writeFile(path.join(opts.destination, 'index.html'), render([], navList, pkg, opts.readme)))
     .then(() =>
       fs.copy('static', path.join(opts.destination, 'static')))
     .then(() => {
       console.log('Write Finished')
       console.timeEnd('publish')
     })
+    .catch(console.error)
 }
 
 module.exports = {

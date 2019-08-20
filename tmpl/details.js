@@ -35,7 +35,7 @@ const createDD = _curry3(function (doclet, highlight, n) {
 
 function details (customTags = [], doclet) {
   const dd = createDD(doclet)
-  const list = ['since', 'kind', ...customTags]
+  const list = ['since', 'kind', 'see', ...customTags]
   const done = compose(reduced)
 
   return section({ class: 'details' }, [dl({}, reduce((name, acc) => {
@@ -57,6 +57,10 @@ function details (customTags = [], doclet) {
           when(
             eq('since'),
             done(dd(false))
+          ),
+          when(
+            eq('see'),
+            done(dd(true))
           )
         ], name),
         dt({ class: 'details__tag' }, [

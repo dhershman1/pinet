@@ -1,4 +1,3 @@
-const path = require('path')
 const { capitalize, concat, map } = require('kyanite')
 const { a, aside, compile, div, span, text, ul, p, li } = require('../engine')
 
@@ -13,12 +12,8 @@ function buildFunctionNav (nav) {
   }, nav))
 }
 
-function validatePkg (pth) {
-  return path.parse(pth).base === 'package.json'
-}
-
 function buildPageNav (packageJson, links) {
-  const pkg = packageJson && validatePkg(packageJson) ? require(packageJson) : false
+  const pkg = packageJson || { name: 'Unknown', version: '0.0.0' }
 
   return div({ class: 'pagenav' }, [
     p({ class: 'pagenav__title' }, [
@@ -31,11 +26,14 @@ function buildPageNav (packageJson, links) {
         href: link
       },
       [text(name)]),
-    concat(links, [{ name: 'Home', link: 'index.html' }, { name: 'Documentation', link: 'documentation.html' }])))
+    concat(links, [
+      { name: 'Home', link: 'index.html' },
+      { name: 'Docs', link: 'documentation.html' }
+    ])))
   ])
 }
 
-function navbar (nav, { links, packageJson }) {
+function navbar (nav, { links }, packageJson) {
   return aside({ class: 'side-nav' }, [
     buildPageNav(packageJson, links),
     compile('input', {
