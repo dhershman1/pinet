@@ -14,6 +14,8 @@ And so Pinet came to pass! It has it's own built in template engine!
 
 Pinet is getting closer to releasing a 0.1.0 version! Feel free to play around with the code with your projects and report any strange activity or bugs you might find, I appreciate it!
 
+![pinet](https://user-images.githubusercontent.com/8997380/63355490-336ce100-c334-11e9-88ce-b6a4643ed18a.png)
+
 ## Features
 
 - Modern, minimalist design for easy to read flow
