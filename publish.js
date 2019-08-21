@@ -8,7 +8,7 @@ const fs = require('fs-extra')
 /* global env */
 
 function publish (taffyData, opts) {
-  console.time('publish')
+  console.time('write docs')
   const data = helper.prune(taffyData)
   const pinet = Object.assign({}, { classes: {} }, env.conf.pinet, { hasHome: Boolean(opts.readme) })
   const children = []
@@ -35,7 +35,7 @@ function publish (taffyData, opts) {
       fs.copy(path.join(__dirname, 'static'), path.join(opts.destination, 'static')))
     .then(() => {
       console.log('Write Finished')
-      console.timeEnd('publish')
+      console.timeEnd('write docs')
     })
     .catch(console.error)
 }
