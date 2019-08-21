@@ -12,8 +12,16 @@ function buildFunctionNav (nav) {
   }, nav))
 }
 
-function buildPageNav (packageJson, links = []) {
+function buildPageNav (packageJson, changelog, links = []) {
   const pkg = packageJson || { name: 'Unknown', version: '0.0.0' }
+  const defaultLinks = [
+    { name: 'Home', link: 'index.html' },
+    { name: 'Documentation', link: 'documentation.html' }
+  ]
+
+  if (changelog) {
+    defaultLinks.push({ name: 'Changelog', link: 'changelog.html' })
+  }
 
   return div({ class: 'pagenav' }, [
     p({ class: 'pagenav__title' }, [
@@ -26,16 +34,13 @@ function buildPageNav (packageJson, links = []) {
         href: link
       },
       [text(name)]),
-    concat(links, [
-      { name: 'Home', link: 'index.html' },
-      { name: 'Docs', link: 'documentation.html' }
-    ])))
+    concat(links, defaultLinks)))
   ])
 }
 
-function navbar (nav, { links }, packageJson) {
+function navbar (nav, { links }, { pkg, changelog }) {
   return aside({ class: 'side-nav' }, [
-    buildPageNav(packageJson, links),
+    buildPageNav(pkg, changelog, links),
     compile('input', {
       class: 'filter',
       type: 'text',

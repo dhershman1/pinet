@@ -4,11 +4,13 @@ const container = require('./tmpl/container')
 const helper = require('jsdoc/util/templateHelper')
 const path = require('path')
 const fs = require('fs-extra')
+const marked = require('marked')
 
 /* global env */
 
 function publish (taffyData, opts) {
   console.time('write docs')
+  const dest = file => path.join(opts.destination, file)
   const data = helper.prune(taffyData)
   const pinet = Object.assign({}, { classes: {} }, env.conf.pinet, { hasHome: Boolean(opts.readme) })
   const children = []
@@ -27,17 +29,46 @@ function publish (taffyData, opts) {
         }
       })
 
-      return fs.writeFile(path.join(opts.destination, 'documentation.html'), render(children, navList, pkg))
+      return fs.writeFile(dest('documentation.html'), render(children, navList, {
+        pkg,
+        changelog: pinet.changelog
+      }))
     })
     .then(() =>
-      fs.writeFile(path.join(opts.destination, 'index.html'), render([], navList, pkg, opts.readme)))
+      fs.writeFile(dest('index.html'), render([], navList, {
+        pkg,
+        changelog: pinet.changelog
+      }, opts.readme)))
     .then(() =>
-      fs.copy(path.join(__dirname, 'static'), path.join(opts.destination, 'static')))
+      fs.copy(path.join(__dirname, 'static'), dest('static')))
     .then(() => {
+      if (pinet.changelog) {
+        return fs.readFile(pinet.changelog, 'UTF-8')
+      }
+
+      return false
+    })
+    .then(data => {
+      if (data) {
+        return fs.writeFile(dest('changelog.html'), render([], navList, {
+          pkg,
+          changelog: pinet.changelog
+        }, marked(data)))
+      }
+
+      return false
+    })
+    .catch(err => {
+      if (err.errno === -2) {
+        console.error('Changelog.md could not be found. Continuing without...')
+      } else {
+        console.error(err)
+      }
+    })
+    .finally(() => {
       console.log('Write Finished')
       console.timeEnd('write docs')
     })
-    .catch(console.error)
 }
 
 module.exports = {

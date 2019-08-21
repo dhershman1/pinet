@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.2
+
+- Removed unused libraries that were being used as tests and were never removed from the package.json
+- Added support for a users changelog markdown file
+- Tweaked how the page navigation works and looks to fit links better
+
 ## v0.1.1
 
 - Made home page easier to read

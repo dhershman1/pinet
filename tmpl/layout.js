@@ -11,7 +11,7 @@ function buildMeta (metaArr) {
 }
 
 function layout (opts) {
-  return function (children = [], nav = [], pkg, html) {
+  return function (children = [], nav = [], navExtras, html) {
     return concat(compile('html', { lang: opts.lang || 'en' }, [
       compile('head', {}, [
         ...buildMeta(opts.meta),
@@ -26,7 +26,7 @@ function layout (opts) {
           div({ class: 'navicon' }, [])
         ]),
         label({ for: 'nav-trigger', class: 'overlay' }, []),
-        navbar(nav, opts, pkg),
+        navbar(nav, opts, navExtras),
         html ? main({}, div({ class: 'wrapper' }, html)) : main({}, children),
         // main({}, html || children),
         footer({}, [
