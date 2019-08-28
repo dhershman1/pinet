@@ -45,7 +45,7 @@ function navbar (nav, { links }, { pkg, changelog }) {
       class: 'filter',
       type: 'text',
       id: 'filter',
-      placeholder: 'Search'
+      placeholder: 'Search Category or Function name'
     }, []), ...buildFunctionNav(nav)])
 }
 
