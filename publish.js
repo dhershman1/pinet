@@ -24,6 +24,7 @@ function publish (taffyData, opts) {
         if (doclet.kind !== 'package') {
           navList.push({ name: doclet.name, cat: doclet.category })
           children.push(container(pinet, doclet))
+          console.log(doclet)
         } else {
           pkg = doclet
         }

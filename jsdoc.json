@@ -4,8 +4,8 @@
   },
   "source": {
     "include": [
-      "node_modules/kyanite/src",
-      "node_modules/kyanite/package.json",
+      "example/fixture",
+      "example/package.json",
       "./README.md"
     ]
   },
