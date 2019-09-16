@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.0
+
+- Changed the placeholder text to be more descriptive
+- Added the recipes tag to the tag util support (Tag isn't supported html wise yet)
+- Added support for source code links
+
 ## v0.1.2
 
 - Removed unused libraries that were being used as tests and were never removed from the package.json

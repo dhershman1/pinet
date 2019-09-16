@@ -1,6 +1,7 @@
 const engine = require('./engine')
 const layout = require('./tmpl/layout')
 const container = require('./tmpl/container')
+const source = require('./tmpl/source')
 const helper = require('jsdoc/util/templateHelper')
 const path = require('path')
 const fs = require('fs-extra')
@@ -15,6 +16,7 @@ function publish (taffyData, opts) {
   const pinet = Object.assign({}, { classes: {} }, env.conf.pinet, { hasHome: Boolean(opts.readme) })
   const children = []
   const navList = []
+  const sources = []
   const render = layout(pinet)
   let pkg = null
 
@@ -24,7 +26,7 @@ function publish (taffyData, opts) {
         if (doclet.kind !== 'package') {
           navList.push({ name: doclet.name, cat: doclet.category })
           children.push(container(pinet, doclet))
-          console.log(doclet)
+          sources.push(source(doclet, opts))
         } else {
           pkg = doclet
         }
@@ -35,6 +37,15 @@ function publish (taffyData, opts) {
         changelog: pinet.changelog
       }))
     })
+    .then(() =>
+      Promise.all(sources))
+    .then(sourceHtml =>
+      Promise.all(sourceHtml.map(({ name, html }) =>
+        fs.writeFile(path.join(opts.destination, `${name}.html`), render(html, navList, {
+          pkg,
+          changelog: pinet.changelog
+        }))))
+    )
     .then(() =>
       fs.writeFile(dest('index.html'), render([], navList, {
         pkg,
