@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.1
+
+- Fixed mobile menu peaking out on certain devices
+
 ## v0.2.0
 
 - Changed the placeholder text to be more descriptive
