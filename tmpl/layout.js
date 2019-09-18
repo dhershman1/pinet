@@ -36,7 +36,6 @@ function layout (opts) {
         label({ for: 'nav-trigger', class: 'overlay' }, []),
         navbar(nav, opts, navExtras),
         html ? main({}, div({ class: 'wrapper' }, html)) : main({}, children),
-        // main({}, html || children),
         footer({}, [
           text('Powered by '),
           a({ href: 'https://github.com/dhershman1/pinet' }, [text('Pinet')])

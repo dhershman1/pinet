@@ -49,7 +49,7 @@ aside {
   height: 100%;
   width: 15%;
   grid-area: aside;
-  overflow: auto;
+  /* overflow: auto; */
   display: block;
   border-right: 2px solid var(--primary);
 }
@@ -393,6 +393,7 @@ th {
 }
 
 @media only screen and (min-width: 320px) and (max-width: 680px) {
+
   body {
     overflow-x: hidden;
   }
@@ -402,6 +403,7 @@ th {
   }
 
   aside {
+    display: block;
     top: 0;
     right: 0;
     bottom: 0;
@@ -438,8 +440,10 @@ th {
   }
 
   .grid {
-    grid-template-areas: 'main'
+    display: block;
+    /* grid-template-areas: 'main'
                          'footer';
     grid-template-columns: 100%;
+    grid-template-rows: auto auto; */
   }
 }
