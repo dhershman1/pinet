@@ -34,6 +34,12 @@ You can also choose to have your changelog listed within the links of your docum
 
 Pinet will then go find, and parse the markdown into html to display on your site
 
+## See It In Action
+
+You can check out kyanites documentation which is using the pinet templating engine to build its docs.
+
+Check it out here: https://kyanite.dusty.codes/
+
 ## Options
 
 - `title` - `String`: This is the title of the pages for your docs
