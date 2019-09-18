@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.3
+
+- Bump the nav icon up so it is easier to see
+
 ## v0.2.2
 
 - Fixed issue on chrome where hamburger icon was showing up off screen
