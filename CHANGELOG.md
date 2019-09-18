@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.2
+
+- Fixed issue on chrome where hamburger icon was showing up off screen
+
 ## v0.2.1
 
 - Fixed mobile menu peaking out on certain devices
