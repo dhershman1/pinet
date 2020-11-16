@@ -18,11 +18,6 @@ function optional (fn, type, data) {
   return []
 }
 
-// [
-//   h3({ class: 'params__head section__title' }, [text('Parameters')]),
-//   params(doclet.params)
-// ]
-
 function container (opts, doclet) {
   return div({ class: 'wrapper', id: doclet.name }, [
     title(doclet),
