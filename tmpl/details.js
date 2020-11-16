@@ -12,10 +12,16 @@ const {
   reduced,
   when
 } = require('kyanite')
-const { ul, dl, dt, dd, li, code, section, span, text } = require('../engine')
+const { a, ul, dl, dt, dd, li, code, section, span, text } = require('../engine')
 const _appendǃ = require('../_internals/_appendǃ')
 const _curry3 = require('../_internals/_curry3')
 
+/**
+ * A curried function to create data points for our lists
+ * @param {Object} doclet The current doclet being processed
+ * @param {Boolean} highlight A boolean to determine if a html black should be highlighted
+ * @param {String} n The property we are currently processing within the doclet
+ */
 const createDD = _curry3(function (doclet, highlight, n) {
   const value = text(doclet[n])
 
@@ -33,13 +39,28 @@ const createDD = _curry3(function (doclet, highlight, n) {
   ])
 })
 
+function createSourceLink (doclet) {
+  return () => dd({ class: 'details__data' }, [
+    ul({ class: 'dummy' }, [
+      li({}, [
+        a({ href: `${doclet.name}.html` }, [text('See Source')])
+      ])
+    ])
+  ])
+}
+
+/**
+ * Handles building the html block for the list of details such as Since, and Kind
+ * @param {Array} customTags An array of strings for custom tags we need to look for
+ * @param {Object} doclet The doclet we are currently processing
+ */
 function details (customTags = [], doclet) {
   const dd = createDD(doclet)
-  const list = ['since', 'kind', 'see', ...customTags]
+  const list = ['since', 'kind', 'see', 'source', ...customTags]
   const done = compose(reduced)
 
   return section({ class: 'details' }, [dl({}, reduce((name, acc) => {
-    if (prop(name, doclet)) {
+    if (prop(name, doclet) || name === 'source') {
       return _appendǃ(acc, concat(
         pipe([
           when(
@@ -57,6 +78,10 @@ function details (customTags = [], doclet) {
           when(
             eq('since'),
             done(dd(false))
+          ),
+          when(
+            eq('source'),
+            done(createSourceLink(doclet))
           ),
           when(
             eq('see'),

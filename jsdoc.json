@@ -33,6 +33,7 @@
         "link": "https://github.com/dhershman1/kyanite"
       }
     ],
+    "changelog": "./CHANGELOG.md",
     "lang": "en",
     "customTags": ["category", "signature"],
     "meta": [

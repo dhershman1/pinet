@@ -49,7 +49,11 @@ function findValidHeaders (params) {
   }, params)
 }
 
-function buildTableHeaders (params, _th) {
+/**
+ * Handles building out the header text for the tables
+ * @param {Array} params An array of parameters for the function
+ */
+function buildTableHeaders (params) {
   const { hasName, hasAttrs, isOptional, hasDefault } = findValidHeaders(params)
 
   return pipe([
@@ -61,6 +65,10 @@ function buildTableHeaders (params, _th) {
   ], [th({ class: 'params__th params__th--type' }, [text('Type')])])
 }
 
+/**
+ * Handles building out and sorting data for our tables display
+ * @param {Object} p The parameter object we are pulling data from
+ */
 function buildTableData (p) {
   // Sorts and filters out the data so it follows the same order as our table heads
   const sortedData = reduce((k, acc) => {
@@ -91,6 +99,10 @@ function buildTableData (p) {
   }, sortedData))
 }
 
+/**
+ * Responsible for controlling the the flow of how our params render
+ * @param {Array} params The array of parameters we need to render
+ */
 function params (paramsList = []) {
   return table({ class: 'params__table' }, [
     thead({ class: 'params__thead' }, [
