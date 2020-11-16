@@ -36,7 +36,7 @@ function optional (fn, type, data) {
 function container (opts, doclet) {
   return div({ class: 'wrapper', id: doclet.name }, [
     title(doclet),
-    details(opts.customTags, doclet),
+    details(opts, doclet),
     section({ class: 'description' }, [p({}, [text(doclet.description)])]),
     div({ class: 'tables' }, [
       section({ class: 'params' }, optional(params, 'params', doclet.params)),

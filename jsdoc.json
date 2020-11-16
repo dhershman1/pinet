@@ -27,6 +27,7 @@
   },
   "pinet": {
     "title": "Testing -- Documentation",
+    "genSources": false,
     "links": [
       {
         "name": "Github",

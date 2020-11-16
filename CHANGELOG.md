@@ -5,6 +5,7 @@
 - Full release
 - Some slight optimizations to the engine
 - Fixed naming conflicts with params
+- Made generating sources optional with `genSources` option
 
 ## v0.2.3
 

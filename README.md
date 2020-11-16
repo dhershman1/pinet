@@ -43,6 +43,7 @@ Check it out here: https://kyanite.dusty.codes/
 ## Options
 
 - `title` - `String`: This is the title of the pages for your docs
+- `genSources` - `Boolean`: Set this to `true` if you want sources files to be generated and linked in your documentation
 - `links` - `Array`: An array of objects to add to the nav, each object needs a `name` and `link` property
 - `lang` - `String`: The value to set the `lang` attribute to on the `html` tag
 - `customTags` - `Array`: An array of strings which should be the tag names you want pinet to consider
@@ -59,6 +60,7 @@ Example:
       "link": "https://github.com/dhershman1/kyanite"
     }
   ],
+  "genSources": true,
   "lang": "en",
   "changelog": "./CHANGELOG.md",
   "customTags": [
