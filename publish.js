@@ -1,18 +1,22 @@
 const engine = require('./engine')
 const layout = require('./tmpl/layout')
 const container = require('./tmpl/container')
+const source = require('./tmpl/source')
 const helper = require('jsdoc/util/templateHelper')
 const path = require('path')
 const fs = require('fs-extra')
+const marked = require('marked')
 
 /* global env */
 
 function publish (taffyData, opts) {
-  console.time('publish')
+  console.time('write docs')
+  const dest = file => path.join(opts.destination, file)
   const data = helper.prune(taffyData)
   const pinet = Object.assign({}, { classes: {} }, env.conf.pinet, { hasHome: Boolean(opts.readme) })
   const children = []
   const navList = []
+  const sources = []
   const render = layout(pinet)
   let pkg = null
 
@@ -22,22 +26,61 @@ function publish (taffyData, opts) {
         if (doclet.kind !== 'package') {
           navList.push({ name: doclet.name, cat: doclet.category })
           children.push(container(pinet, doclet))
+          sources.push(source(doclet, opts))
         } else {
           pkg = doclet
         }
       })
 
-      return fs.writeFile(path.join(opts.destination, 'documentation.html'), render(children, navList, pkg))
+      return fs.writeFile(dest('documentation.html'), render(children, navList, {
+        pkg,
+        changelog: pinet.changelog
+      }))
     })
     .then(() =>
-      fs.writeFile(path.join(opts.destination, 'index.html'), render([], navList, pkg, opts.readme)))
+      Promise.all(sources))
+    .then(sourceHtml =>
+      Promise.all(sourceHtml.map(({ name, html }) =>
+        fs.writeFile(path.join(opts.destination, `${name}.html`), render(html, navList, {
+          pkg,
+          changelog: pinet.changelog
+        }))))
+    )
     .then(() =>
-      fs.copy(path.join(__dirname, 'static'), path.join(opts.destination, 'static')))
+      fs.writeFile(dest('index.html'), render([], navList, {
+        pkg,
+        changelog: pinet.changelog
+      }, opts.readme)))
+    .then(() =>
+      fs.copy(path.join(__dirname, 'static'), dest('static')))
     .then(() => {
-      console.log('Write Finished')
-      console.timeEnd('publish')
+      if (pinet.changelog) {
+        return fs.readFile(pinet.changelog, 'UTF-8')
+      }
+
+      return false
     })
-    .catch(console.error)
+    .then(data => {
+      if (data) {
+        return fs.writeFile(dest('changelog.html'), render([], navList, {
+          pkg,
+          changelog: pinet.changelog
+        }, marked(data)))
+      }
+
+      return false
+    })
+    .catch(err => {
+      if (err.errno === -2) {
+        console.error('Changelog.md could not be found. Continuing without...')
+      } else {
+        console.error(err)
+      }
+    })
+    .finally(() => {
+      console.log('Write Finished')
+      console.timeEnd('write docs')
+    })
 }
 
 module.exports = {

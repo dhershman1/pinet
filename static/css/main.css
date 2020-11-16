@@ -69,11 +69,15 @@ aside {
   font-size: 14px;
 }
 
+.pagenav__links {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
 .pagenav__link {
   text-decoration: none;
   padding: 0.3rem;
   color: var(--primary-lighter);
-  border-right: 2px solid #FFF;
 }
 
 .pagenav__link:hover {
@@ -119,6 +123,11 @@ footer {
 
 .wrapper h3 {
   margin-bottom: 0.1rem;
+}
+
+.wrapper p > img {
+  width: 100%;
+  height: 100%;
 }
 
 .filter {
@@ -384,6 +393,7 @@ th {
 }
 
 @media only screen and (min-width: 320px) and (max-width: 680px) {
+
   body {
     overflow-x: hidden;
   }
@@ -393,11 +403,12 @@ th {
   }
 
   aside {
+    display: block;
     top: 0;
     right: 0;
     bottom: 0;
     width: 75%;
-    left: -300px;
+    left: -100%;
     z-index: 3;
     padding: 0 10px;
     transition: left 0.2s;
@@ -406,7 +417,6 @@ th {
   .navicon-button {
     display: inline-block;
     position: fixed;
-    top: 1.5em;
     right: 0;
     z-index: 2;
   }
@@ -429,8 +439,6 @@ th {
   }
 
   .grid {
-    grid-template-areas: 'main'
-                         'footer';
-    grid-template-columns: 100%;
+    display: block;
   }
 }

@@ -5,6 +5,16 @@ const title = require('./title')
 const details = require('./details')
 const examples = require('./example')
 
+/**
+ * Responsible for creating containers to contain the other html modules
+ */
+
+/**
+ * Marks an html module as optional keeping the flow consistent but not showing fields that do not exist
+ * @param {Function} fn A Predicate function to run
+ * @param {String} type What type of element is being
+ * @param {Object} data The data to run within the predicate function
+ */
 function optional (fn, type, data) {
   const t = type === 'params' ? 'parameters' : type
 
@@ -18,11 +28,11 @@ function optional (fn, type, data) {
   return []
 }
 
-// [
-//   h3({ class: 'params__head section__title' }, [text('Parameters')]),
-//   params(doclet.params)
-// ]
-
+/**
+ * Handles wrapping html elements within a container to keep flow consistent
+ * @param {Object} opts The Options passed from our layout
+ * @param {Object} doclet The current doclet we are processing
+ */
 function container (opts, doclet) {
   return div({ class: 'wrapper', id: doclet.name }, [
     title(doclet),

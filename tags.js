@@ -19,4 +19,11 @@ exports.defineTags = function (dictionary) {
       doclet.signature = tag.value.split(/\r|\n|\n\r/g)
     }
   })
+
+  dictionary.defineTag('recipe', {
+    mustHaveValue: true,
+    onTagged (doclet, tag) {
+      doclet.recipe = tag.value.split(/\r|\n|\n\r/g)
+    }
+  })
 }
