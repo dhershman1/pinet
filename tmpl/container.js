@@ -19,10 +19,12 @@ function optional (fn, type, data) {
   const t = type === 'params' ? 'parameters' : type
 
   if (data && data.length) {
-    return t === 'returns' || t === 'parameters' ? [
-      h3({ class: `${type}__head section__title` }, [text(capitalize(t))]),
-      fn(data)
-    ] : [fn(data)]
+    return t === 'returns' || t === 'parameters'
+      ? [
+          h3({ class: `${type}__head section__title` }, [text(capitalize(t))]),
+          fn(data)
+        ]
+      : [fn(data)]
   }
 
   return []
