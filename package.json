@@ -30,7 +30,7 @@
   "dependencies": {
     "fs-extra": "9.0.1",
     "highlight.js": "10.3.2",
-    "kyanite": "1.4.1",
+    "kyanite": "1.4.2",
     "marked": "1.2.4"
   },
   "devDependencies": {
