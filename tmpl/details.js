@@ -54,9 +54,15 @@ function createSourceLink (doclet) {
  * @param {Array} customTags An array of strings for custom tags we need to look for
  * @param {Object} doclet The doclet we are currently processing
  */
-function details (customTags = [], doclet) {
+function details ({ customTags = [], genSources = false }, doclet) {
   const dd = createDD(doclet)
-  const list = ['since', 'kind', 'see', 'source', ...customTags]
+  const defaultDeets = ['since', 'kind', 'see']
+
+  if (genSources) {
+    defaultDeets.push('source')
+  }
+
+  const list = [...defaultDeets, ...customTags]
   const done = compose(reduced)
 
   return section({ class: 'details' }, [dl({}, reduce((name, acc) => {

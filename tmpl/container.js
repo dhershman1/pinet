@@ -19,10 +19,12 @@ function optional (fn, type, data) {
   const t = type === 'params' ? 'parameters' : type
 
   if (data && data.length) {
-    return t === 'returns' || t === 'parameters' ? [
-      h3({ class: `${type}__head section__title` }, [text(capitalize(t))]),
-      fn(data)
-    ] : [fn(data)]
+    return t === 'returns' || t === 'parameters'
+      ? [
+          h3({ class: `${type}__head section__title` }, [text(capitalize(t))]),
+          fn(data)
+        ]
+      : [fn(data)]
   }
 
   return []
@@ -36,7 +38,7 @@ function optional (fn, type, data) {
 function container (opts, doclet) {
   return div({ class: 'wrapper', id: doclet.name }, [
     title(doclet),
-    details(opts.customTags, doclet),
+    details(opts, doclet),
     section({ class: 'description' }, [p({}, [text(doclet.description)])]),
     div({ class: 'tables' }, [
       section({ class: 'params' }, optional(params, 'params', doclet.params)),

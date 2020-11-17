@@ -26,7 +26,9 @@ function publish (taffyData, opts) {
         if (doclet.kind !== 'package') {
           navList.push({ name: doclet.name, cat: doclet.category })
           children.push(container(pinet, doclet))
-          sources.push(source(doclet, opts))
+          if (pinet.genSources) {
+            sources.push(source(doclet, opts))
+          }
         } else {
           pkg = doclet
         }

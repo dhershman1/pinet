@@ -103,14 +103,14 @@ function buildTableData (p) {
  * Responsible for controlling the the flow of how our params render
  * @param {Array} params The array of parameters we need to render
  */
-function params (params = []) {
+function params (paramsList = []) {
   return table({ class: 'params__table' }, [
     thead({ class: 'params__thead' }, [
-      tr({ class: 'params__tr' }, buildTableHeaders(params, th({ class: 'params__th' })))
+      tr({ class: 'params__tr' }, buildTableHeaders(paramsList, th({ class: 'params__th' })))
     ]),
     tbody({ class: 'params__tbody' }, map(p => {
       return tr({ class: 'params__tr' }, buildTableData(p))
-    }, params))
+    }, paramsList))
   ])
 }
 
