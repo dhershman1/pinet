@@ -2,7 +2,6 @@ const path = require('path')
 const fs = require('fs-extra')
 
 const marked = require('marked')
-const { pathOr } = require('kyanite')
 
 const engine = require('./engine')
 const layout = require('./tmpl/layout')
@@ -59,20 +58,6 @@ function publish (taffyData, opts) {
     // Copy over all the static files into our docs folder
     .then(() =>
       fs.copy(path.join(__dirname, 'static'), dest(['static'])))
-    // Copy the user provided stylesheet to static folder
-    // IF the user provided a file name
-    // If its a link or empty then skip
-    .then(() => {
-      const str = pathOr('', ['cssSheet'], pinet).toLowerCase()
-
-      // Check to see if the string contains a hyperlink starter
-      if (!str || str.includes('http://') || str.includes('https://')) {
-        return false
-      }
-
-      // Copy the css file into our docs/static folder
-      return fs.copy(str, dest(['static', 'css']))
-    })
     .then(() => {
       if (pinet.changelog) {
         return fs.readFile(pinet.changelog, 'UTF-8')
