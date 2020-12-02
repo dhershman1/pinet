@@ -39,7 +39,7 @@ function layout (opts) {
           text('Powered by '),
           a({ href: 'https://github.com/dhershman1/pinet' }, [text('Pinet')])
         ]),
-        compile('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js' }, []),
+        compile('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js' }, []),
         compile('script', { src: 'static/js/search.js' }, [])
       ]))
     ]), '<!DOCTYPE html>')
