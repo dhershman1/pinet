@@ -28,7 +28,7 @@
   "pinet": {
     "title": "Testing -- Documentation",
     "genSources": false,
-    "cssSheet": "./test/css/file.css",
+    "cssSheet": "test/css/file.css",
     "links": [
       {
         "name": "Github",
