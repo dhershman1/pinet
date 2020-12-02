@@ -1,17 +1,20 @@
+const path = require('path')
+const fs = require('fs-extra')
+
+const marked = require('marked')
+const { pathOr } = require('kyanite')
+
 const engine = require('./engine')
 const layout = require('./tmpl/layout')
 const container = require('./tmpl/container')
 const source = require('./tmpl/source')
 const helper = require('jsdoc/util/templateHelper')
-const path = require('path')
-const fs = require('fs-extra')
-const marked = require('marked')
 
 /* global env */
 
 function publish (taffyData, opts) {
   console.time('write docs')
-  const dest = file => path.join(opts.destination, file)
+  const dest = file => path.join(opts.destination, ...file)
   const data = helper.prune(taffyData)
   const pinet = Object.assign({}, { classes: {} }, env.conf.pinet, { hasHome: Boolean(opts.readme) })
   const children = []
@@ -34,7 +37,7 @@ function publish (taffyData, opts) {
         }
       })
 
-      return fs.writeFile(dest('documentation.html'), render(children, navList, {
+      return fs.writeFile(dest(['documentation.html']), render(children, navList, {
         pkg,
         changelog: pinet.changelog
       }))
@@ -49,12 +52,27 @@ function publish (taffyData, opts) {
         }))))
     )
     .then(() =>
-      fs.writeFile(dest('index.html'), render([], navList, {
+      fs.writeFile(dest(['index.html']), render([], navList, {
         pkg,
         changelog: pinet.changelog
       }, opts.readme)))
+    // Copy over all the static files into our docs folder
     .then(() =>
-      fs.copy(path.join(__dirname, 'static'), dest('static')))
+      fs.copy(path.join(__dirname, 'static'), dest(['static'])))
+    // Copy the user provided stylesheet to static folder
+    // IF the user provided a file name
+    // If its a link or empty then skip
+    .then(() => {
+      const str = pathOr('', ['cssSheet'], pinet).toLowerCase()
+
+      // Check to see if the string contains a hyperlink starter
+      if (!str || str.includes('http://') || str.includes('https://')) {
+        return false
+      }
+
+      // Copy the css file into our docs/static folder
+      return fs.copy(str, dest(['static', 'css']))
+    })
     .then(() => {
       if (pinet.changelog) {
         return fs.readFile(pinet.changelog, 'UTF-8')
