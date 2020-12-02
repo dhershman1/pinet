@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.1
+
+- Removed the examples folder, as it was misleading and not used/maintained
+  - This should also address dependabot issues
+- Added some code comments to publish.js to document it out a little bit better
+- Changed the timing verbage from `write done` to `Time`
+- Updated the html documentation to use v10.4.0 of highlight js CDN
+
 ## v1.0.0
 
 - Full release
