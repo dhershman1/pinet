@@ -25,7 +25,6 @@ function layout (opts) {
         ...buildMeta(opts.meta),
         compile('title', {}, opts.title || 'Documentation'),
         link({ href: 'static/css/main.css', rel: 'stylesheet' }),
-        // link({ href: 'static/css/prettify.css', rel: 'stylesheet' }),
         link({ href: 'static/css/hl.css', rel: 'stylesheet' })
       ]),
       compile('body', { id: 'root' }, div({ class: 'grid' }, [
