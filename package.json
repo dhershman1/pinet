@@ -29,7 +29,7 @@
   "homepage": "https://github.com/dhershman1/pinet#readme",
   "dependencies": {
     "fs-extra": "9.0.1",
-    "highlight.js": "10.4.0",
+    "highlight.js": "10.4.1",
     "kyanite": "1.4.2",
     "marked": "1.2.5"
   },
