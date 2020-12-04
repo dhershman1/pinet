@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.2
+
+- Patched highlight.js to 10.4.1
+
 ## v1.0.1
 
 - Removed the examples folder, as it was misleading and not used/maintained
