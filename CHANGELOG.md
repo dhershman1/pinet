@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.0
+
+- Added in a functionality that when a user hits enter after typing in search it will auto jump to that function
+  - No more having to type and then click!
+  - Clear the search bar and hit enter to go back to the top
+
 ## v1.0.2
 
 - Patched highlight.js to 10.4.1
