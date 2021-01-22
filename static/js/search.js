@@ -3,7 +3,7 @@ const navItems = Array.from(document.querySelectorAll('.nav__item'))
 
 /* eslint-disable no-labels */
 
-/* global hljs */
+/* global hljs, location */
 
 hljs.initHighlightingOnLoad()
 
@@ -34,6 +34,12 @@ const fuzzySearch = (needle, haystack) => {
   }
 
   return true
+}
+
+search.onkeyup = ({ key, target }) => {
+  if (key.toLowerCase() === 'enter') {
+    location.hash = target.value.toLowerCase()
+  }
 }
 
 search.oninput = ({ target }) => {
