@@ -1,4 +1,4 @@
-const search = document.getElementById('filter')
+const search = document.getElementById('pinetFilter')
 const navItems = Array.from(document.querySelectorAll('.nav__item'))
 const functionSet = new Set(navItems.map(el => el.getAttribute('name').toLowerCase()))
 
