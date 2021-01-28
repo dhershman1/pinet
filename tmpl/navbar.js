@@ -63,7 +63,7 @@ function navbar (nav, { links }, { pkg, changelog }) {
     compile('input', {
       class: 'filter',
       type: 'text',
-      id: 'filter',
+      id: 'pinetFilter',
       placeholder: 'Search Category or Function name'
     }, []), ...buildFunctionNav(nav)])
 }
