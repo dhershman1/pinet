@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.1
+
+- Improved the search functionality so it will use fuzzySearch to try and figure out partial words when you hit enter
+- Patched all dependencies
+- Added prefix to search bar to stop blocking filter searches for functions named "filter"
+
 ## v1.1.0
 
 - Added in a functionality that when a user hits enter after typing in search it will auto jump to that function

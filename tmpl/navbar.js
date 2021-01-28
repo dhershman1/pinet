@@ -7,7 +7,7 @@ const { a, aside, compile, div, span, text, ul, p, li } = require('../engine')
  */
 function buildFunctionNav (nav) {
   return ul({ class: 'nav' }, map(({ name, cat }) => {
-    return li({ class: 'nav__item', 'data-cat': cat }, [
+    return li({ class: 'nav__item', 'data-cat': cat, name }, [
       a({ class: 'nav__link', href: `documentation.html#${name}` }, [
         span({ class: 'nav__name' }, [text(name)]),
         span({ class: 'nav__type tag' }, [text(cat)])
@@ -63,7 +63,7 @@ function navbar (nav, { links }, { pkg, changelog }) {
     compile('input', {
       class: 'filter',
       type: 'text',
-      id: 'filter',
+      id: 'pinetFilter',
       placeholder: 'Search Category or Function name'
     }, []), ...buildFunctionNav(nav)])
 }
