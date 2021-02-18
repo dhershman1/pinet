@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.2
+
+- Patched dependencies
+
 ## v1.1.1
 
 - Improved the search functionality so it will use fuzzySearch to try and figure out partial words when you hit enter
