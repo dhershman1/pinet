@@ -18,7 +18,7 @@ function source (doclet, opts) {
       html: div({ class: 'source__wrapper' }, [
         h2({ class: 'source__header' }, [text(doclet.name)]),
         pre({ class: 'source__code' }, [
-          code({ class: 'hljs javascript' }, map(x => text(hljs.highlight('javascript', x).value), sourceCode))
+          code({ class: 'hljs javascript' }, map(x => text(hljs.highlight(x, { language: 'javascript' }).value), sourceCode))
         ])
       ])
     }))

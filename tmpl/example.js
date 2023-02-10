@@ -11,7 +11,7 @@ hljs.registerLanguage('javascript', js)
  */
 function examples (ex = []) {
   return pre({}, [
-    code({ class: 'hljs javascript' }, map(x => text(hljs.highlight('javascript', x).value), ex))
+    code({ class: 'hljs javascript' }, map(x => text(hljs.highlight(x, { language: 'javascript' }).value), ex))
   ])
 }
 

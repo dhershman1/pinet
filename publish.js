@@ -93,7 +93,7 @@ function publish (taffyData, opts) {
         return fs.writeFile(dest('changelog.html'), render([], navList, {
           pkg,
           changelog: pinet.changelog
-        }, marked(data)))
+        }, marked.parse(data)))
       }
 
       return false
