@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.4
+
+- Dependency updates for packages
+- Fixed some changes made by those updates
+
 ## v1.1.3
 
 - Patched dependencies
