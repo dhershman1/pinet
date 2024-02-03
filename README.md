@@ -52,30 +52,32 @@ Check it out here: https://kyanite.dusty.codes/
 Example:
 
 ```json
-"pinet": {
-  "title": "Testing -- Documentation",
-  "links": [
-    {
-      "name": "Github",
-      "link": "https://github.com/dhershman1/kyanite"
-    }
-  ],
-  "genSources": true,
-  "lang": "en",
-  "changelog": "./CHANGELOG.md",
-  "customTags": [
-    "category",
-    "signature"
-  ],
-  "meta": [
-    {
-      "name": "viewport",
-      "content": "width=device-width, initial-scale=1.0"
-    },
-    {
-      "charset": "UTF-8"
-    }
-  ]
+{
+  "pinet": {
+    "title": "Testing -- Documentation",
+    "links": [
+      {
+        "name": "Github",
+        "link": "https://github.com/dhershman1/kyanite"
+      }
+    ],
+    "genSources": true,
+    "lang": "en",
+    "changelog": "./CHANGELOG.md",
+    "customTags": [
+      "category",
+      "signature"
+    ],
+    "meta": [
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1.0"
+      },
+      {
+        "charset": "UTF-8"
+      }
+    ]
+  }
 }
 ```
 

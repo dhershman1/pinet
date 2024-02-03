@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.2.0
+
+### New
+
+- Now supports Dark mode!
+  - Will enter dark or light mode based on users preference
+
+### Fixed
+
+- Mobile nav menu no longer looks weird
+  - The blue box now takes up the full area rather than having padding on the sides
+
 ## v1.1.5
 
 - Dependency updates
