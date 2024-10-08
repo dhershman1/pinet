@@ -24,7 +24,6 @@ function paramCommaList (params) {
  * @param {Array} param0.returns What the function returns
  */
 function title ({ name, kind, params = [], returns = [] }) {
-  // console.log(returns)
   return h2({ class: 'title section__title' }, [
     text(name),
     ...branch(
