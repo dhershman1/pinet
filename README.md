@@ -49,6 +49,10 @@ Check it out here: https://kyanite.dusty.codes/
 - `customTags` - `Array`: An array of strings which should be the tag names you want pinet to consider
 - `meta` - `Array`: An array of meta objects each object is built out into a meta element the properties provided will be turned into attributes
 
+> [!NOTE]
+> As of v1.2.0 Pinet now also supports the usage of the verbose option found in the `opts` section of jsdocs
+> Right now this is just a step tracker to possibly help figure out where parsing fails
+
 Example:
 
 ```json
