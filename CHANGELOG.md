@@ -6,11 +6,21 @@
 
 - Now supports Dark mode!
   - Will enter dark or light mode based on users preference
+- Added support for verbose in the jsdoc opts
+  - Though right now its more or less the steps the engine is processing, this may grow into something more later
+- Clicking on `See Source` in the documentation now opens in a new tab
 
 ### Fixed
 
 - Mobile nav menu no longer looks weird
   - The blue box now takes up the full area rather than having padding on the sides
+- Some loops that were running way to many times
+- Removed extra steps that weren't needed anymore
+
+### Chore
+
+- Dependency Updates
+- Some documentation updates on certain functions
 
 ## v1.1.5
 
