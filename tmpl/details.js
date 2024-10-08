@@ -51,7 +51,9 @@ function createSourceLink (doclet) {
 
 /**
  * Handles building the html block for the list of details such as Since, and Kind
- * @param {Array} customTags An array of strings for custom tags we need to look for
+ * @param {Object} opts An object of options for details
+ * @param {Array} opts.customTag An array of custom tags to add to the details list
+ * @param {Boolean} opts.genSources A boolean to determine if we should generate source links
  * @param {Object} doclet The doclet we are currently processing
  */
 function details ({ customTags = [], genSources = false }, doclet) {
