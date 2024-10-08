@@ -64,8 +64,7 @@ function details ({ customTags = [], genSources = false }, doclet) {
 
   const list = [...defaultDeets, ...customTags]
   const done = compose(reduced)
-
-  return section({ class: 'details' }, [dl({}, reduce((name, acc) => {
+  const reducedEl = reduce((name, acc) => {
     if (prop(name, doclet) || name === 'source') {
       return _appendǃ(acc, concat(
         pipe([
@@ -87,7 +86,7 @@ function details ({ customTags = [], genSources = false }, doclet) {
           ),
           when(
             eq('source'),
-            done(createSourceLink(doclet))
+            done(() => createSourceLink(doclet))
           ),
           when(
             eq('see'),
@@ -101,8 +100,9 @@ function details ({ customTags = [], genSources = false }, doclet) {
     }
 
     return acc
-  }
-  , [], list))])
+  }, [], list)
+
+  return section({ class: 'details' }, [dl({}, reducedEl)])
 }
 
 module.exports = details
