@@ -2,12 +2,12 @@ const path = require('path')
 const fs = require('fs-extra')
 
 const marked = require('marked')
+const helper = require('jsdoc/util/templateHelper')
 
 const engine = require('./engine')
 const layout = require('./tmpl/layout')
 const container = require('./tmpl/container')
 const source = require('./tmpl/source')
-const helper = require('jsdoc/util/templateHelper')
 
 /* global env */
 
@@ -23,7 +23,7 @@ function publish (taffyData, opts) {
   // Prune Template data using jsdoc helper
   const data = helper.prune(taffyData)
   // Build up pinet options
-  const pinet = Object.assign({}, { classes: {} }, env.conf.pinet, { hasHome: Boolean(opts.readme) })
+  const pinet = { classes: {}, ...env.conf.pinet, hasHome: Boolean(opts.readme) }
   const children = []
   const navList = []
   const sources = []
