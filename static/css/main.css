@@ -4,11 +4,24 @@
   --primary-lighter: hsl(208, 29%, 88%);
   --primary-darker: hsl(208, 29%, 38%);
   --font: hsl(230, 4%, 31%);
+  --char: hsl(0, 4%, 22%);
+  --white: hsl(0, 0%, 100%);
+  --jet: hsl(120, 1%, 17%);
+  --lightgrey: hsl(60, 3%, 93%);
+
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
-  background-color: #eeeeee;
+  background-color: var(--jet);
+  color: var(--lightgrey);
 }
 
 table {
@@ -16,6 +29,7 @@ table {
 }
 
 code {
+  color: var(--jet);
   background: var(--border);
   padding: 0.1rem 0.5rem;
 }
@@ -34,7 +48,6 @@ code {
   font-family: sans-serif;
   display: grid;
   font-size: 16px;
-  color: var(--font);
   height: 100%;
   grid-template-areas: 'aside main'
                        'aside foot';
@@ -42,7 +55,7 @@ code {
 }
 
 aside {
-  background-color: #FFF;
+  background-color: var(--char);
   position: fixed;
   left: 0;
   bottom: 0;
@@ -98,7 +111,7 @@ main {
 footer {
   grid-area: foot;
   padding: 0.8rem 1rem;
-  background-color: #FFF;
+  background-color: var(--char);
   text-align: center;
   border-top: 1px solid var(--border);
 }
@@ -110,10 +123,10 @@ footer {
 
 .wrapper {
   margin-bottom: 0.7rem;
-  background-color: #FFF;
+  background-color: var(--char);
   padding: 0.6rem;
   box-shadow: 0 0 0 1px #ccc;
-  border: 1px solid #FFF;
+  border: 1px solid var(--char);
   border-radius: 2px;
 }
 
@@ -142,12 +155,12 @@ footer {
 }
 
 .title {
-  color: var(--font);
+  color: var(--white);
   margin-top: 0;
 }
 
 .title__params {
-  color: var(--primary);
+  color: var(--primary-lighter);
 }
 
 .details {
@@ -161,7 +174,7 @@ footer {
 
 .nav {
   padding-left: 0;
-  background-color: #FFF;
+  background-color: var(--char);
 }
 
 .nav__item {
@@ -174,7 +187,7 @@ footer {
 }
 
 .nav__link {
-  color: var(--primary);
+  color: var(--primary-lighter);
   text-decoration: none;
   padding: 0.5rem 0.7rem;
   display: grid;
@@ -259,11 +272,11 @@ th {
 }
 
 .params__type {
-  color: var(--primary);
+  color: var(--primary-lighter);
 }
 
 .params__td--optional {
-  color: var(--primary);
+  color: var(--primary-lighter);
 }
 
 /* navicon button */
@@ -410,7 +423,6 @@ th {
     width: 75%;
     left: -100%;
     z-index: 3;
-    padding: 0 10px;
     transition: left 0.2s;
   }
 
@@ -440,5 +452,37 @@ th {
 
   .grid {
     display: block;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    color: var(--jet);
+    background-color: var(--lightgrey);
+  }
+
+  aside {
+    background-color: var(--lightgrey);
+  }
+
+  .nav {
+    background-color: var(--white);
+  }
+
+  .wrapper {
+    background-color: var(--white);
+    border-color: var(--white);
+  }
+
+  .title {
+    color: var(--font);
+    margin-top: 0;
+  }
+
+  .nav__link,
+  .title__params,
+  .params__type,
+  .params__td--optional {
+    color: var(--primary);
   }
 }

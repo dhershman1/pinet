@@ -27,7 +27,7 @@
   },
   "pinet": {
     "title": "Testing -- Documentation",
-    "genSources": false,
+    "genSources": true,
     "links": [
       {
         "name": "Github",
@@ -44,6 +44,18 @@
       },
       {
         "charset": "UTF-8"
+      },
+      {
+        "name": "description",
+        "content": "Documentation for the Kyanite library"
+      },
+      {
+        "name": "og:description",
+        "content": "Documentation for the Kyanite library"
+      },
+      {
+        "name": "og:type",
+        "content": "website"
       }
     ]
   }

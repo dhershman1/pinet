@@ -43,7 +43,7 @@ function createSourceLink (doclet) {
   return () => dd({ class: 'details__data' }, [
     ul({ class: 'dummy' }, [
       li({}, [
-        a({ href: `${doclet.name}.html` }, [text('See Source')])
+        a({ href: `${doclet.name}.html`, target: '__blank' }, [text('See Source')])
       ])
     ])
   ])
@@ -51,7 +51,9 @@ function createSourceLink (doclet) {
 
 /**
  * Handles building the html block for the list of details such as Since, and Kind
- * @param {Array} customTags An array of strings for custom tags we need to look for
+ * @param {Object} opts An object of options for details
+ * @param {Array} opts.customTag An array of custom tags to add to the details list
+ * @param {Boolean} opts.genSources A boolean to determine if we should generate source links
  * @param {Object} doclet The doclet we are currently processing
  */
 function details ({ customTags = [], genSources = false }, doclet) {
@@ -63,9 +65,9 @@ function details ({ customTags = [], genSources = false }, doclet) {
   }
 
   const list = [...defaultDeets, ...customTags]
+  const sourceFn = createSourceLink(doclet)
   const done = compose(reduced)
-
-  return section({ class: 'details' }, [dl({}, reduce((name, acc) => {
+  const reducedEl = reduce((name, acc) => {
     if (prop(name, doclet) || name === 'source') {
       return _appendǃ(acc, concat(
         pipe([
@@ -87,7 +89,7 @@ function details ({ customTags = [], genSources = false }, doclet) {
           ),
           when(
             eq('source'),
-            done(createSourceLink(doclet))
+            done(sourceFn)
           ),
           when(
             eq('see'),
@@ -101,8 +103,9 @@ function details ({ customTags = [], genSources = false }, doclet) {
     }
 
     return acc
-  }
-  , [], list))])
+  }, [], list)
+
+  return section({ class: 'details' }, [dl({}, reducedEl)])
 }
 
 module.exports = details

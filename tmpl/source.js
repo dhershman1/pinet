@@ -10,9 +10,14 @@ const { code, div, h2, pre, text } = require('../engine')
 
 hljs.registerLanguage('javascript', js)
 
+/**
+ * Creates source code pages for each function in the documentation
+ * @param {Object} doclet The doclet obejct to build the source code for
+ * @param {Object} opts The options passed from jsdoc config
+ * @returns {Promise} A promise that resolves with the source code html block
+ */
 function source (doclet, opts) {
-  return fs.mkdirp(path.join(opts.destination, 'source'))
-    .then(() => fs.readFile(path.join(doclet.meta.path, doclet.meta.filename), 'utf-8'))
+  return fs.readFile(path.join(doclet.meta.path, doclet.meta.filename), 'utf-8')
     .then(sourceCode => ({
       name: doclet.name,
       html: div({ class: 'source__wrapper' }, [
