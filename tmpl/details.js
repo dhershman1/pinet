@@ -43,7 +43,7 @@ function createSourceLink (doclet) {
   return () => dd({ class: 'details__data' }, [
     ul({ class: 'dummy' }, [
       li({}, [
-        a({ href: `${doclet.name}.html` }, [text('See Source')])
+        a({ href: `${doclet.name}.html`, target: '__blank' }, [text('See Source')])
       ])
     ])
   ])
@@ -63,6 +63,7 @@ function details ({ customTags = [], genSources = false }, doclet) {
   }
 
   const list = [...defaultDeets, ...customTags]
+  const sourceFn = createSourceLink(doclet)
   const done = compose(reduced)
   const reducedEl = reduce((name, acc) => {
     if (prop(name, doclet) || name === 'source') {
@@ -86,7 +87,7 @@ function details ({ customTags = [], genSources = false }, doclet) {
           ),
           when(
             eq('source'),
-            done(() => createSourceLink(doclet))
+            done(sourceFn)
           ),
           when(
             eq('see'),
