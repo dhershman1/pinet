@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.1
+
+## New
+
+- Added support for `deprecated` tags
+
 ## v1.2.0
 
 ### New

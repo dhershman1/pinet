@@ -1,6 +1,6 @@
 {
   "name": "pinet",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Yet another jsdocs template module",
   "main": "index.js",
   "scripts": {
