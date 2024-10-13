@@ -58,7 +58,7 @@ function createSourceLink (doclet) {
  */
 function details ({ customTags = [], genSources = false }, doclet) {
   const dd = createDD(doclet)
-  const defaultDeets = ['since', 'kind', 'see']
+  const defaultDeets = ['since', 'kind', 'see', 'deprecated']
 
   if (genSources) {
     defaultDeets.push('source')
@@ -93,6 +93,10 @@ function details ({ customTags = [], genSources = false }, doclet) {
           ),
           when(
             eq('see'),
+            done(dd(true))
+          ),
+          when(
+            eq('deprecated'),
             done(dd(true))
           )
         ], name),
