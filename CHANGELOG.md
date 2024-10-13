@@ -2,7 +2,7 @@
 
 ## v1.2.1
 
-## New
+### New
 
 - Added support for `deprecated` tags
 
