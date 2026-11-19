@@ -1,5 +1,6 @@
 const { capitalize, ensureArray, filter, map, propOr, reduce } = require('kyanite')
 const { a, ul, dl, dt, dd, li, code, section, span, escape, text } = require('../engine')
+const _sourceFile = require('../_internals/_sourceFile')
 
 /**
  * How each value is displayed, anything not listed here is shown as plain text
@@ -50,7 +51,7 @@ function createSourceLink (doclet) {
   return dd({ class: 'details__data' }, [
     ul({ class: 'dummy' }, [
       li({}, [
-        a({ href: `${doclet.name}.html`, target: '_blank' }, [text('See Source')])
+        a({ href: _sourceFile(doclet.name), target: '_blank' }, [text('See Source')])
       ])
     ])
   ])
