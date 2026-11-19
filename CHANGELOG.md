@@ -46,10 +46,12 @@
   - Holy bananas look at all them new test!
   - Added `npm run test:cov` for a coverage report using Node's built in coverage
 - The page nav builds its links without mutating an array
+- Rewrote the README for v2, covering setup, every option, the custom tags, the templating engine, and upgrading from v1
 
 ### Fixed
 
 - `main` in `package.json` now points at `engine.js`, so `require('pinet')` and `import { compile } from 'pinet'` work instead of failing with `Cannot find module`
+- Every engine export can now be imported by name from an ES module, `import { div, p } from 'pinet'` used to fail with `Named export 'p' not found`
 - Parameter tables no longer drop the "Optional?" header when a later parameter isn't optional
 - Parameter tables no longer drop default values of `0`, `false`, or `''`
 - Types like `Array.<String>` no longer break the page HTML
