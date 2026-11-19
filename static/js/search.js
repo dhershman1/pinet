@@ -9,9 +9,7 @@ const functionMap = new Map(navItems.map(el => {
 
 /* eslint-disable no-labels */
 
-/* global hljs, location */
-
-hljs.initHighlightingOnLoad()
+/* global location */
 
 // FuzzySearch taken directly from kyanite!
 const fuzzySearch = (needle, haystack) => {
