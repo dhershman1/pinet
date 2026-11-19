@@ -15,7 +15,8 @@
     "node": ">=22.12"
   },
   "scripts": {
-    "test": "tape tests/engine.js \"tests/tmpl/*.js\" | tap-on",
+    "test": "node --test \"tests/**/*.spec.js\"",
+    "test:cov": "node --test --experimental-test-coverage --test-coverage-exclude=\"tests/**\" \"tests/**/*.spec.js\"",
     "docs": "jsdoc -c jsdoc.json",
     "lint": "eslint"
   },
@@ -47,8 +48,6 @@
   "devDependencies": {
     "eslint": "10.15.0",
     "jsdoc": "4.0.5",
-    "neostandard": "0.14.1",
-    "tap-on": "1.0.0",
-    "tape": "5.11.0"
+    "neostandard": "0.14.1"
   }
 }
