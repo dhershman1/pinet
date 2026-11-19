@@ -23,20 +23,18 @@ function buildFunctionNav (nav) {
  * @param {Array} links A list of links to render on the page
  */
 function buildPageNav (packageJson, changelog, links = []) {
-  const pkg = packageJson || { name: 'Unknown', version: '0.0.0' }
+  // jsdoc always creates a package doclet, but it has no name or version without a package.json in the sources
+  const { name = 'Unknown', version = '0.0.0' } = packageJson || {}
   const defaultLinks = [
     { name: 'Home', link: 'index.html' },
-    { name: 'Documentation', link: 'documentation.html' }
+    { name: 'Documentation', link: 'documentation.html' },
+    ...(changelog ? [{ name: 'Changelog', link: 'changelog.html' }] : [])
   ]
-
-  if (changelog) {
-    defaultLinks.push({ name: 'Changelog', link: 'changelog.html' })
-  }
 
   return div({ class: 'pagenav' }, [
     p({ class: 'pagenav__title' }, [
-      compile('strong', {}, [escape(capitalize(pkg.name))]),
-      span({ class: 'pagenav__version' }, [escape(` v${pkg.version}`)])
+      compile('strong', {}, [escape(capitalize(name))]),
+      span({ class: 'pagenav__version' }, [escape(` v${version}`)])
     ]),
     p({ class: 'pagenav__links' }, map(({ name, link }) =>
       a({
