@@ -1,6 +1,7 @@
 const { concat } = require('kyanite')
 const navbar = require('./navbar')
 const { a, compile, div, escape, footer, input, label, link, main, meta, text } = require('../engine')
+const { highlightBlocks } = require('../_internals/_highlight')
 
 /**
  *
@@ -34,12 +35,11 @@ function layout (opts) {
         ]),
         label({ for: 'nav-trigger', class: 'overlay' }, []),
         navbar(nav, opts, navExtras),
-        html ? main({}, [div({ class: 'wrapper' }, [html])]) : main({}, children),
+        html ? main({}, [div({ class: 'wrapper' }, [highlightBlocks(html)])]) : main({}, children),
         footer({}, [
           text('Powered by '),
           a({ href: 'https://github.com/dhershman1/pinet' }, [text('Pinet')])
         ]),
-        compile('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js' }, []),
         compile('script', { src: 'static/js/search.js' }, [])
       ])])
     ]), '<!DOCTYPE html>')

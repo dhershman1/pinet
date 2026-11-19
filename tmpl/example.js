@@ -1,9 +1,6 @@
 const { map } = require('kyanite')
-const hljs = require('highlight.js')
-const js = require('highlight.js/lib/languages/javascript')
 const { pre, code, text } = require('../engine')
-
-hljs.registerLanguage('javascript', js)
+const { highlight } = require('../_internals/_highlight')
 
 /**
  * Handles building out the html block for code examples
@@ -12,7 +9,7 @@ hljs.registerLanguage('javascript', js)
  * @returns {String} The html for the examples block
  */
 function examples (ex = []) {
-  const highlighted = map(x => hljs.highlight(x, { language: 'javascript' }).value, ex)
+  const highlighted = map(x => highlight(x, 'javascript'), ex)
 
   return pre({}, [
     code({ class: 'hljs javascript' }, [text(highlighted.join('\n'))])

@@ -1,13 +1,10 @@
 /**
  * Responsible for going and building out source code pages for our functions
  */
-const fs = require('fs-extra')
-const path = require('path')
-const hljs = require('highlight.js')
-const js = require('highlight.js/lib/languages/javascript')
+const fs = require('node:fs/promises')
+const path = require('node:path')
 const { code, div, escape, h2, pre, text } = require('../engine')
-
-hljs.registerLanguage('javascript', js)
+const { highlight } = require('../_internals/_highlight')
 
 /**
  * Creates source code pages for each function in the documentation
@@ -24,7 +21,7 @@ function source (doclet) {
       html: div({ class: 'source__wrapper' }, [
         h2({ class: 'source__header' }, [escape(doclet.name)]),
         pre({ class: 'source__code' }, [
-          code({ class: 'hljs javascript' }, [text(hljs.highlight(sourceCode, { language: 'javascript' }).value)])
+          code({ class: 'hljs javascript' }, [text(highlight(sourceCode, 'javascript'))])
         ])
       ])
     }))

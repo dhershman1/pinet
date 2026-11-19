@@ -4,6 +4,7 @@ const params = require('./params')
 const title = require('./title')
 const details = require('./details')
 const examples = require('./example')
+const { highlightBlocks } = require('../_internals/_highlight')
 
 /**
  * Responsible for creating containers to contain the other html modules
@@ -37,7 +38,7 @@ function optional (fn, type, data) {
  * @returns {Array} The description section, or an empty array when there is no description
  */
 function description (desc = '') {
-  const trimmed = desc.trim()
+  const trimmed = highlightBlocks(desc.trim())
 
   if (!trimmed) {
     return []
