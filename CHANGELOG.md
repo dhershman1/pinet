@@ -41,6 +41,11 @@
 - Replaced `fs-extra` with Node's built in `node:fs/promises`, Pinet has one less dependency
 - Updated `marked` to v18, `highlight.js` to v11.12.0, and `kyanite` to v3.2.0
 - Highlighting is handled by one shared internal helper instead of being set up separately in each template
+- Swapped `tape` and `tap-on` for Node's built in test runner (`node:test`)
+  - The test suite now covers the engine, every template, the custom tags, the internal helpers, and full jsdoc builds through `publish`
+  - Holy bananas look at all them new test!
+  - Added `npm run test:cov` for a coverage report using Node's built in coverage
+- The page nav builds its links without mutating an array
 
 ### Fixed
 
@@ -62,6 +67,8 @@
 - A source file that can't be read now skips that one source page instead of stopping the rest of the docs from being written
 - A missing changelog file now reports the path it looked for, and other missing files are no longer reported as a missing changelog
 - Removed the deprecated `hljs.initHighlightingOnLoad()` call, which logged a deprecation warning in the browser and re-highlighted code that was already highlighted
+- Docs for projects without a `package.json` in their jsdoc sources no longer crash with `Cannot read properties of undefined (reading 'charAt')`
+  - jsdoc always adds a package entry, the page nav now falls back to `Unknown` and `v0.0.0` when it has no name or version
 - Errors while writing the docs now make jsdoc exit with a failure code instead of `0`
   - `publish` now returns its promise, so jsdoc waits for every file to finish writing before it exits
 
