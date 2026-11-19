@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- Pinet now requires Node.js 22 or newer
+- Pinet now requires Node.js 22.12 or newer (`marked` v18 is ESM only, and 22.12 is the first 22.x that can `require()` it without a flag)
 - `jsdoc` is now a peer dependency (`^4.0.0`) instead of something Pinet quietly expected to be installed
   - Install it alongside Pinet: `npm i -D jsdoc pinet`
 - The published package now only contains the files Pinet needs at runtime
@@ -20,6 +20,9 @@
   - Nullable and repeatable parameters show `<nullable>`, `<non-null>`, or `<repeatable>` in the Attributes column instead of a bare `true`
   - The Optional column shows `Yes` instead of `true`
 - Nav items now use a `data-name` attribute instead of the invalid `name` attribute
+- Generated docs no longer load highlight.js from a CDN, all code is highlighted while the docs are built
+  - The README, changelog, and markdown descriptions now have their code blocks highlighted at build time like examples and source pages already were
+  - If you were customizing the docs and relied on the global `hljs` object in the browser, it is no longer there
 
 ### New
 
@@ -35,6 +38,9 @@
 - Simplified the details list into a lookup table instead of a chain of `when` checks
 - Simplified the parameter tables into a single list of column definitions
 - Removed the internal `_appendǃ` helper
+- Replaced `fs-extra` with Node's built in `node:fs/promises`, Pinet has one less dependency
+- Updated `marked` to v18, `highlight.js` to v11.12.0, and `kyanite` to v3.2.0
+- Highlighting is handled by one shared internal helper instead of being set up separately in each template
 
 ### Fixed
 
@@ -55,6 +61,7 @@
 - Pressing enter in the search now jumps to camelCase functions (like `addIndex`), the jump used a lowercased id before
 - A source file that can't be read now skips that one source page instead of stopping the rest of the docs from being written
 - A missing changelog file now reports the path it looked for, and other missing files are no longer reported as a missing changelog
+- Removed the deprecated `hljs.initHighlightingOnLoad()` call, which logged a deprecation warning in the browser and re-highlighted code that was already highlighted
 - Errors while writing the docs now make jsdoc exit with a failure code instead of `0`
   - `publish` now returns its promise, so jsdoc waits for every file to finish writing before it exits
 
