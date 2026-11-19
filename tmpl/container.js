@@ -31,6 +31,24 @@ function optional (fn, type, data) {
 }
 
 /**
+ * Builds the description section, descriptions that already start with a block element
+ * (like the output of jsdocs markdown plugin) are not wrapped in another paragraph
+ * @param {String} desc The description of the doclet
+ * @returns {Array} The description section, or an empty array when there is no description
+ */
+function description (desc = '') {
+  const trimmed = desc.trim()
+
+  if (!trimmed) {
+    return []
+  }
+
+  const isBlock = /^<(p|div|ul|ol|pre|table|blockquote|h[1-6])[\s>]/i.test(trimmed)
+
+  return [section({ class: 'description' }, [isBlock ? text(trimmed) : p({}, [text(trimmed)])])]
+}
+
+/**
  * Handles wrapping html elements within a container to keep flow consistent
  * @param {Object} opts The Options passed from our layout
  * @param {Object} doclet The current doclet we are processing
@@ -39,7 +57,7 @@ function container (opts, doclet) {
   return div({ class: 'wrapper', id: doclet.name }, [
     title(doclet),
     details(opts, doclet),
-    section({ class: 'description' }, [p({}, [text(doclet.description)])]),
+    ...description(doclet.description),
     div({ class: 'tables' }, [
       section({ class: 'params' }, optional(params, 'params', doclet.params)),
       section({ class: 'returns' }, optional(params, 'returns', doclet.returns))
