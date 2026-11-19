@@ -71,3 +71,10 @@ test('engine -- exports an element builder for every tag the templates use', () 
     assert.equal(engine[tag]({}, []), `<${tag}></${tag}>`, `${tag} renders`)
   })
 })
+
+test('engine -- every export can be imported by name from an es module', async () => {
+  const esm = await import('../engine.js')
+  const named = Object.keys(esm).filter(key => !['default', 'module.exports'].includes(key))
+
+  assert.deepEqual(named.sort(), Object.keys(engine).sort())
+})
