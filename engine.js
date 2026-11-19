@@ -59,6 +59,37 @@ function formatPipeList (list, char = '|') {
     .join(` ${char} `)
 }
 
+// Element builders, declared on their own so `import { div } from 'pinet'` can find them as named exports
+const label = compile('label')
+const a = compile('a')
+const div = compile('div')
+const dl = compile('dl')
+const dt = compile('dt')
+const dd = compile('dd')
+const span = compile('span')
+const h1 = compile('h1')
+const h2 = compile('h2')
+const h3 = compile('h3')
+const h4 = compile('h4')
+const h5 = compile('h5')
+const h6 = compile('h6')
+const main = compile('main')
+const p = compile('p')
+const table = compile('table')
+const thead = compile('thead')
+const tbody = compile('tbody')
+const td = compile('td')
+const th = compile('th')
+const tr = compile('tr')
+const pre = compile('pre')
+const code = compile('code')
+const ul = compile('ul')
+const li = compile('li')
+const section = compile('section')
+const aside = compile('aside')
+const footer = compile('footer')
+const header = compile('header')
+
 module.exports = {
   compile,
   escape,
@@ -68,33 +99,33 @@ module.exports = {
   meta,
   link,
   input,
-  label: compile('label'),
-  a: compile('a'),
-  div: compile('div'),
-  dl: compile('dl'),
-  dt: compile('dt'),
-  dd: compile('dd'),
-  span: compile('span'),
-  h1: compile('h1'),
-  h2: compile('h2'),
-  h3: compile('h3'),
-  h4: compile('h4'),
-  h5: compile('h5'),
-  h6: compile('h6'),
-  main: compile('main'),
-  p: compile('p'),
-  table: compile('table'),
-  thead: compile('thead'),
-  tbody: compile('tbody'),
-  td: compile('td'),
-  th: compile('th'),
-  tr: compile('tr'),
-  pre: compile('pre'),
-  code: compile('code'),
-  ul: compile('ul'),
-  li: compile('li'),
-  section: compile('section'),
-  aside: compile('aside'),
-  footer: compile('footer'),
-  header: compile('header')
+  label,
+  a,
+  div,
+  dl,
+  dt,
+  dd,
+  span,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  main,
+  p,
+  table,
+  thead,
+  tbody,
+  td,
+  th,
+  tr,
+  pre,
+  code,
+  ul,
+  li,
+  section,
+  aside,
+  footer,
+  header
 }
