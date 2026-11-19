@@ -1,116 +1,89 @@
-const {
-  always,
-  branch,
-  compose,
-  concat,
-  either,
-  eq,
-  ensureArray,
-  identity,
-  map,
-  prop,
-  pipe,
-  plan,
-  prepend,
-  reduce,
-  reduced,
-  some,
-  when,
-  whole
-} = require('kyanite')
-const { code, formatPipeList, table, tbody, td, text, th, thead, tr } = require('../engine')
-
-// This can probably be replaced now
-function findValidHeaders (params) {
-  const validate = whole({
-    hasName: identity,
-    hasAttrs: identity,
-    isOptional: identity,
-    hasDefault: identity
-  })
-  const passes = some(identity)
-
-  return reduce((val, acc) => {
-    if (validate(acc)) {
-      return reduced(acc)
-    }
-
-    return Object.assign({}, acc, {
-      hasName: passes([acc.hasName, val.name]),
-      hasAttrs: passes([acc.hasAttrs, val.nullable, val.variable]),
-      isOptional: passes([acc.optional, val.optional]),
-      hasDefault: passes([acc.hasDefault, typeof val.defaultvalue !== 'undefined'])
-    })
-  }, {
-    hasName: false,
-    hasAttrs: false,
-    isOptional: false,
-    hasDefault: false
-  }, params)
-}
+const { T, filter, join, map, pathOr, some } = require('kyanite')
+const { code, escape, formatPipeList, table, tbody, td, text, th, thead, tr } = require('../engine')
 
 /**
- * Handles building out the header text for the tables
- * @param {Array} params An array of parameters for the function
+ * Builds the attribute labels (nullable, non-null, repeatable) for a parameter
+ * @param {Object} p The parameter object
+ * @returns {String} The attribute labels separated by a line break
  */
-function buildTableHeaders (params) {
-  const { hasName, hasAttrs, isOptional, hasDefault } = findValidHeaders(params)
-
-  return pipe([
-    when(always(hasName), prepend(th({ class: 'params__th params__th--name' }, [text('Name')]))),
-    when(always(hasAttrs), concat(th({ class: 'params__th params__th--attributes' }, [text('Attributes')]))),
-    when(always(isOptional), concat(th({ class: 'params__th params__th--optional' }, [text('Optional?')]))),
-    when(always(hasDefault), concat(th({ class: 'params__th params__th--default' }, [text('Default')]))),
-    concat(th({ class: 'params__th params__th--description' }, [text('Description')]))
-  ], [th({ class: 'params__th params__th--type' }, [text('Type')])])
+function attributes ({ nullable, variable }) {
+  return join('<br>', filter(Boolean, [
+    nullable === true && '&lt;nullable&gt;',
+    nullable === false && '&lt;non-null&gt;',
+    variable && '&lt;repeatable&gt;'
+  ]))
 }
 
 /**
- * Handles building out and sorting data for our tables display
- * @param {Object} p The parameter object we are pulling data from
+ * The columns a table can have, in the order they are rendered
+ * - `has` decides if the column is needed for the given parameter
+ * - `cell` renders the parameters value for the column
  */
-function buildTableData (p) {
-  // Sorts and filters out the data so it follows the same order as our table heads
-  const sortedData = reduce((k, acc) => {
-    if (p[k]) {
-      return branch(
-        either(eq('nullable'), eq('variable')),
-        x => Object.assign({}, acc, { attributes: p[x] }),
-        x => Object.assign({}, acc, { [x]: p[x] }),
-        k
-      )
-    }
+const columns = [
+  {
+    key: 'name',
+    label: 'Name',
+    has: p => Boolean(p.name),
+    cell: p => p.name ? code({}, [escape(p.name)]) : ''
+  },
+  {
+    key: 'type',
+    label: 'Type',
+    has: T,
+    cell: p => formatPipeList(pathOr([], ['type', 'names'], p))
+  },
+  {
+    key: 'attributes',
+    label: 'Attributes',
+    has: p => typeof p.nullable === 'boolean' || Boolean(p.variable),
+    cell: attributes
+  },
+  {
+    key: 'optional',
+    label: 'Optional?',
+    has: p => Boolean(p.optional),
+    cell: p => p.optional ? 'Yes' : ''
+  },
+  {
+    key: 'defaultvalue',
+    label: 'Default',
+    has: p => p.defaultvalue !== undefined,
+    cell: p => p.defaultvalue !== undefined ? code({}, [escape(p.defaultvalue)]) : ''
+  },
+  {
+    key: 'description',
+    label: 'Description',
+    has: T,
+    cell: p => text(p.description ?? '')
+  }
+]
 
-    return acc
-  }, {}, ['name', 'type', 'nullable', 'variable', 'optional', 'defaultvalue', 'description'])
-
-  return Object.values(plan({
-    name: x => {
-      const val = ensureArray(x)
-      // compose(td({ class: 'params__td params__td--name' }), ensureArray)
-      return td({ class: 'params__td params__td--name' }, [code({}, val)])
-    },
-    type: when(prop('names'), pipe([prop('names'), formatPipeList, td({ class: 'params__td params__td--type' })])),
-    nullable: when(identity, compose(td({ class: 'params__td params__td--nullable' }), ensureArray)),
-    variable: when(identity, compose(td({ class: 'params__td params__td--variable' }), ensureArray)),
-    optional: compose(td({ class: 'params__td--optional' }), ensureArray),
-    defaultvalue: when(identity, compose(td({ class: 'params__td params__td--defaultvalue' }), ensureArray)),
-    description: when(identity, compose(td({ class: 'params__td params__td--description' }), ensureArray))
-  }, sortedData))
+/**
+ * Finds the columns that at least one parameter has a value for
+ * @param {Array} paramsList The array of parameters
+ * @returns {Array} The columns to render
+ */
+function activeColumns (paramsList) {
+  return filter(col => some(col.has, paramsList), columns)
 }
 
 /**
- * Responsible for controlling the the flow of how our params render
- * @param {Array} params The array of parameters we need to render
+ * Responsible for controlling the flow of how our params render
+ * Every row gets one cell per header so the columns always line up
+ * @param {Array} paramsList The array of parameters we need to render
+ * @returns {String} The html table
  */
 function params (paramsList = []) {
+  const cols = activeColumns(paramsList)
+
   return table({ class: 'params__table' }, [
     thead({ class: 'params__thead' }, [
-      tr({ class: 'params__tr' }, buildTableHeaders(paramsList, th({ class: 'params__th' })))
+      tr({ class: 'params__tr' }, map(({ key, label }) =>
+        th({ class: `params__th params__th--${key}` }, [label]), cols))
     ]),
-    tbody({ class: 'params__tbody' }, map(p => {
-      return tr({ class: 'params__tr' }, buildTableData(p))
-    }, paramsList))
+    tbody({ class: 'params__tbody' }, map(p =>
+      tr({ class: 'params__tr' }, map(({ key, cell }) =>
+        td({ class: `params__td params__td--${key}` }, [cell(p)]), cols)), paramsList))
   ])
 }
 
