@@ -1,5 +1,5 @@
-const path = require('path')
-const fs = require('fs-extra')
+const path = require('node:path')
+const fs = require('node:fs/promises')
 
 const marked = require('marked')
 const helper = require('jsdoc/util/templateHelper')
@@ -38,7 +38,7 @@ function publish (taffyData, opts) {
   _log('Starting Write...')
   _log('Destination:', opts.destination)
   // Generate the destination folder
-  return fs.mkdirp(opts.destination)
+  return fs.mkdir(opts.destination, { recursive: true })
     // Loop through documentation data
     .then(() => {
       data().each(doclet => {
@@ -94,7 +94,7 @@ function publish (taffyData, opts) {
     // Copy over all the static files into our docs/static folder
     .then(() => {
       _log('Copying Static Files...')
-      return fs.copy(path.join(__dirname, 'static'), dest('static'))
+      return fs.cp(path.join(__dirname, 'static'), dest('static'), { recursive: true })
     })
     // If the user provided a changelog location then go ahead and read the data
     // If the file can't be found let the user know and continue without it
