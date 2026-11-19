@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.0.0
+
+### Breaking Changes
+
+- Pinet now requires Node.js 22 or newer
+- `jsdoc` is now a peer dependency (`^4.0.0`) instead of something Pinet quietly expected to be installed
+  - Install it alongside Pinet: `npm i -D jsdoc pinet`
+- The published package now only contains the files Pinet needs at runtime
+  - Tests, configs, and other development files are no longer shipped
+
+### Changed
+
+- Swapped `standard` and `snazzy` for `neostandard`, using ESLint's flat config
+- Removed `npm-run-all`; tests now run through a single `tape` command
+- Added a GitHub Actions workflow that lints, runs the tests on Node.js 22 and 24, and builds the example docs
+- All files now use LF line endings, enforced through `.gitattributes`
+- Updated development dependencies, clearing every `npm audit` warning
+
+### Fixed
+
+- `main` in `package.json` now points at `engine.js`, so `require('pinet')` and `import { compile } from 'pinet'` work instead of failing with `Cannot find module`
+
 ## v1.2.1
 
 ### New
