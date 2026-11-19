@@ -10,6 +10,7 @@ const layout = require('./tmpl/layout')
 const container = require('./tmpl/container')
 const source = require('./tmpl/source')
 const log = require('./_internals/_log')
+const _sourceFile = require('./_internals/_sourceFile')
 
 /* global env */
 
@@ -20,14 +21,14 @@ const log = require('./_internals/_log')
  * @returns {Promise} Resolves once every file is written, jsdoc waits on this before exiting
  */
 function publish (taffyData, opts) {
-  console.time('Time')
+  const start = performance.now()
   // A simple destination function
   const dest = file => path.join(opts.destination, file)
   const _log = log(opts.verbose)
   // Prune Template data using jsdoc helper
   const data = helper.prune(taffyData)
   // Build up pinet options
-  const pinet = { classes: {}, ...env.conf.pinet, verbose: opts.verbose, hasHome: Boolean(opts.readme) }
+  const pinet = { ...env.conf.pinet }
   const children = []
   const navList = []
   const sources = []
@@ -78,7 +79,7 @@ function publish (taffyData, opts) {
     .then(sourceHtml => {
       _log('Writing Source Code HTML Files...')
       return Promise.all(sourceHtml.filter(Boolean).map(({ name, html }) =>
-        fs.writeFile(path.join(opts.destination, `${name}.html`), render(html, navList, {
+        fs.writeFile(dest(_sourceFile(name)), render(html, navList, {
           pkg,
           changelog: pinet.changelog
         }))))
@@ -128,14 +129,17 @@ function publish (taffyData, opts) {
 
       return false
     })
+    // Everything was written, let verbose users know we're done
+    .then(() => {
+      _log('Write Finished')
+    })
     // If something went wrong log it through jsdoc's logger, this tells jsdoc to exit with a failure code
     .catch(err => {
       logger.error('Pinet failed to write the documentation: %s', err.stack || err)
     })
-    // Once finished Log out that we're done, and print out the time it took
+    // Log the time it took, whether or not it worked
     .finally(() => {
-      console.log('Write Finished')
-      console.timeEnd('Time')
+      _log(`Time: ${(performance.now() - start).toFixed(3)}ms`)
     })
 }
 
