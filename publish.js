@@ -3,6 +3,7 @@ const fs = require('fs-extra')
 
 const marked = require('marked')
 const helper = require('jsdoc/util/templateHelper')
+const logger = require('jsdoc/util/logger')
 
 const engine = require('./engine')
 const layout = require('./tmpl/layout')
@@ -16,6 +17,7 @@ const log = require('./_internals/_log')
  *
  * @param {Object} taffyData Template Data provided by jsdocs
  * @param {Object} opts Options Object provided by jsdocs
+ * @returns {Promise} Resolves once every file is written, jsdoc waits on this before exiting
  */
 function publish (taffyData, opts) {
   console.time('Time')
@@ -36,7 +38,7 @@ function publish (taffyData, opts) {
   _log('Starting Write...')
   _log('Destination:', opts.destination)
   // Generate the destination folder
-  fs.mkdirp(opts.destination)
+  return fs.mkdirp(opts.destination)
     // Loop through documentation data
     .then(() => {
       data().each(doclet => {
@@ -48,7 +50,7 @@ function publish (taffyData, opts) {
           // If we are generating source files make sure we do that too
           if (pinet.genSources) {
             _log('Generating Source:', doclet.name)
-            sources.push(source(doclet, opts))
+            sources.push(source(doclet))
           }
         // Otherwise its the package json data so set that
         } else {
@@ -72,10 +74,10 @@ function publish (taffyData, opts) {
       return Promise.all(sources)
     })
     // Once we run through all of our promises then go ahead and start writing them all out
-    // Onto rendered HTML files
+    // Onto rendered HTML files, skipping any source files that could not be read
     .then(sourceHtml => {
       _log('Writing Source Code HTML Files...')
-      return Promise.all(sourceHtml.map(({ name, html }) =>
+      return Promise.all(sourceHtml.filter(Boolean).map(({ name, html }) =>
         fs.writeFile(path.join(opts.destination, `${name}.html`), render(html, navList, {
           pkg,
           changelog: pinet.changelog
@@ -84,7 +86,7 @@ function publish (taffyData, opts) {
     // Create the primary index html for the main home page and write it
     .then(() => {
       _log('Writing Index HTML...')
-      fs.writeFile(dest('index.html'), render([], navList, {
+      return fs.writeFile(dest('index.html'), render([], navList, {
         pkg,
         changelog: pinet.changelog
       }, opts.readme))
@@ -95,10 +97,19 @@ function publish (taffyData, opts) {
       return fs.copy(path.join(__dirname, 'static'), dest('static'))
     })
     // If the user provided a changelog location then go ahead and read the data
+    // If the file can't be found let the user know and continue without it
     .then(() => {
       if (pinet.changelog) {
         _log('Reading Changelog...')
         return fs.readFile(pinet.changelog, 'UTF-8')
+          .catch(err => {
+            if (err.code === 'ENOENT') {
+              console.error(`Changelog could not be found at ${pinet.changelog}. Continuing without...`)
+              return false
+            }
+
+            throw err
+          })
       }
 
       _log('No Changelog Found Skipping...')
@@ -117,16 +128,9 @@ function publish (taffyData, opts) {
 
       return false
     })
-    // If something went wrong, then go ahead and throw it to the catch
+    // If something went wrong log it through jsdoc's logger, this tells jsdoc to exit with a failure code
     .catch(err => {
-      // If the error was an fs error and is -2 this means we couldn't find the changelog.md
-      // So log out we couldn't find it and move on
-      if (err.errno === -2) {
-        console.error('Changelog.md could not be found. Continuing without...')
-      // Otherwise log out the full error
-      } else {
-        console.error(err)
-      }
+      logger.error('Pinet failed to write the documentation: %s', err.stack || err)
     })
     // Once finished Log out that we're done, and print out the time it took
     .finally(() => {
