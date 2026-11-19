@@ -68,3 +68,7 @@ test('details -- source comes before custom tags', () => {
 
   assert.deepEqual(tags, ['Source:', 'Category:'])
 })
+
+test('details -- source links use a safe file name', () => {
+  assert.match(details({ genSources: true }, { name: 'utils/math' }), /<a href="utils_math\.html" target="_blank">See Source<\/a>/)
+})

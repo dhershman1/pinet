@@ -15,14 +15,15 @@ let tmp
  * @param {String} name A name for this build, used for its config and output folder
  * @param {Object} pinet The pinet options to build with
  * @param {Object} [opts] Extra jsdoc opts
+ * @param {String} [src] The folder of source files to document
  * @returns {Promise<Object>} The exit code, output, and destination of the build
  */
-async function build (name, pinet, opts = {}) {
+async function build (name, pinet, opts = {}, src = path.join(fixtures, 'src')) {
   const destination = path.join(tmp, name)
   const config = path.join(tmp, `${name}.json`)
 
   await fs.writeFile(config, JSON.stringify({
-    source: { include: [path.join(fixtures, 'src')] },
+    source: { include: [src] },
     plugins: ['plugins/markdown', path.join(root, 'tags.js')],
     opts: { template: root, destination, readme: path.join(fixtures, 'README.md'), ...opts },
     pinet: { title: 'Fixture Docs', genSources: true, customTags: ['category', 'signature'], ...pinet }
@@ -87,11 +88,10 @@ test('publish -- readme, changelog, and source pages are highlighted', async () 
 })
 
 test('publish -- a missing changelog is reported and the build still finishes', async () => {
-  const { code, stdout, stderr, destination } = await build('nochangelog', { changelog: path.join(fixtures, 'NOPE.md') })
+  const { code, stderr, destination } = await build('nochangelog', { changelog: path.join(fixtures, 'NOPE.md') })
 
   assert.equal(code, 0, stderr)
   assert.match(stderr, /Changelog could not be found at .*NOPE\.md/)
-  assert.match(stdout, /Write Finished/)
   assert.ok((await fs.readdir(destination)).includes('documentation.html'))
   assert.ok(!(await fs.readdir(destination)).includes('changelog.html'))
 })
@@ -110,8 +110,43 @@ test('publish -- a failed build exits with a failure code', async () => {
   // A file where the destination folder should be makes every write fail
   await fs.writeFile(blocked, '')
 
-  const { code, stderr } = await build('blocked', {})
+  const { code, stdout, stderr } = await build('blocked', {})
 
   assert.equal(code, 1)
   assert.match(stderr, /Pinet failed to write the documentation/)
+  assert.doesNotMatch(stdout, /Write Finished/)
+})
+
+test('publish -- names that are not safe file names still get source pages', async () => {
+  const { code, stderr, destination } = await build('modules', {}, {}, path.join(fixtures, 'modules'))
+  const files = await fs.readdir(destination)
+
+  assert.equal(code, 0, stderr)
+  assert.ok(files.includes('utils_math.html'), files.join(', '))
+  assert.match(await read(destination, 'documentation.html'), /<a href="utils_math\.html" target="_blank">See Source<\/a>/)
+  assert.match(await read(destination, 'utils_math.html'), /<h2 class="source__header">utils\/math<\/h2>/)
+})
+
+test('publish -- a successful build is quiet unless verbose', async () => {
+  const quiet = await build('quiet', {})
+
+  assert.equal(quiet.code, 0, quiet.stderr)
+  assert.equal(quiet.stdout, '')
+  assert.equal(quiet.stderr, '')
+
+  const verbose = await build('verbose', {}, { verbose: true })
+
+  assert.equal(verbose.code, 0, verbose.stderr)
+  assert.match(verbose.stdout, /Starting Write\.\.\./)
+  assert.match(verbose.stdout, /Write Finished\nTime: \d+\.\d{3}ms\n/)
+})
+
+test('publish -- a failed verbose build logs its time but not Write Finished', async () => {
+  await fs.writeFile(path.join(tmp, 'blocked-verbose'), '')
+
+  const { code, stdout } = await build('blocked-verbose', {}, { verbose: true })
+
+  assert.equal(code, 1)
+  assert.doesNotMatch(stdout, /Write Finished/)
+  assert.match(stdout, /Time: \d+\.\d{3}ms\n/)
 })
