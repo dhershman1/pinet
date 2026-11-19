@@ -1,49 +1,57 @@
-const {
-  always,
-  branch,
-  capitalize,
-  compose,
-  concat,
-  either,
-  eq,
-  pipe,
-  prop,
-  reduce,
-  reduced,
-  when
-} = require('kyanite')
-const { a, ul, dl, dt, dd, li, code, section, span, text } = require('../engine')
-const _appendǃ = require('../_internals/_appendǃ')
-const _curry3 = require('../_internals/_curry3')
+const { capitalize, ensureArray, filter, map, propOr, reduce } = require('kyanite')
+const { a, ul, dl, dt, dd, li, code, section, span, escape, text } = require('../engine')
+const _sourceFile = require('../_internals/_sourceFile')
 
 /**
- * A curried function to create data points for our lists
- * @param {Object} doclet The current doclet being processed
- * @param {Boolean} highlight A boolean to determine if a html black should be highlighted
- * @param {String} n The property we are currently processing within the doclet
+ * How each value is displayed, anything not listed here is shown as plain text
  */
-const createDD = _curry3(function (doclet, highlight, n) {
-  const value = text(doclet[n])
+const styles = {
+  category: 'tag',
+  kind: 'tag',
+  signature: 'code',
+  see: 'code',
+  deprecated: 'code'
+}
 
+const wrappers = {
+  tag: val => span({ class: 'tag' }, [val]),
+  code: val => code({}, [val]),
+  plain: val => val
+}
+
+/**
+ * Turns a doclet value into display text, a bare `true` (like an empty `@deprecated` tag) becomes "Yes"
+ * @param {*} val The value from the doclet
+ * @returns {String} The escaped display text
+ */
+function display (val) {
+  return val === true ? 'Yes' : escape(val)
+}
+
+/**
+ * Builds the data element for a tag, each value in a list gets its own line
+ * @param {String} name The tag name we are rendering
+ * @param {*} value The value(s) of the tag from the doclet
+ * @returns {String} The html for the data element
+ */
+function createDD (name, value) {
+  const wrap = wrappers[propOr('plain', name, styles)]
+
+  return dd({ class: 'details__data' }, [
+    ul({ class: 'dummy' }, map(v => li({}, [wrap(display(v))]), ensureArray(value)))
+  ])
+}
+
+/**
+ * Builds the link to the generated source page for a doclet
+ * @param {Object} doclet The doclet we are processing
+ * @returns {String} The html for the data element
+ */
+function createSourceLink (doclet) {
   return dd({ class: 'details__data' }, [
     ul({ class: 'dummy' }, [
       li({}, [
-        branch(
-          always(highlight),
-          () => code({}, [value]),
-          () => either(eq('category'), eq('kind'), n) ? span({ class: 'tag' }, [value]) : value,
-          value
-        )
-      ])
-    ])
-  ])
-})
-
-function createSourceLink (doclet) {
-  return () => dd({ class: 'details__data' }, [
-    ul({ class: 'dummy' }, [
-      li({}, [
-        a({ href: `${doclet.name}.html`, target: '__blank' }, [text('See Source')])
+        a({ href: _sourceFile(doclet.name), target: '_blank' }, [text('See Source')])
       ])
     ])
   ])
@@ -52,64 +60,29 @@ function createSourceLink (doclet) {
 /**
  * Handles building the html block for the list of details such as Since, and Kind
  * @param {Object} opts An object of options for details
- * @param {Array} opts.customTag An array of custom tags to add to the details list
+ * @param {Array} opts.customTags An array of custom tags to add to the details list
  * @param {Boolean} opts.genSources A boolean to determine if we should generate source links
  * @param {Object} doclet The doclet we are currently processing
+ * @returns {String} The html for the details section
  */
 function details ({ customTags = [], genSources = false }, doclet) {
-  const dd = createDD(doclet)
-  const defaultDeets = ['since', 'kind', 'see', 'deprecated']
+  const hasValue = name => name === 'source' || ![undefined, null, false, ''].includes(doclet[name])
+  const tags = filter(hasValue, [
+    'since',
+    'kind',
+    'see',
+    'deprecated',
+    ...(genSources ? ['source'] : []),
+    ...customTags
+  ])
 
-  if (genSources) {
-    defaultDeets.push('source')
-  }
+  const items = reduce((name, acc) => [
+    ...acc,
+    dt({ class: 'details__tag' }, [escape(`${capitalize(name)}:`)]),
+    name === 'source' ? createSourceLink(doclet) : createDD(name, doclet[name])
+  ], [], tags)
 
-  const list = [...defaultDeets, ...customTags]
-  const sourceFn = createSourceLink(doclet)
-  const done = compose(reduced)
-  const reducedEl = reduce((name, acc) => {
-    if (prop(name, doclet) || name === 'source') {
-      return _appendǃ(acc, concat(
-        pipe([
-          when(
-            eq('category'),
-            done(dd(false))
-          ),
-          when(
-            eq('signature'),
-            done(dd(true))
-          ),
-          when(
-            eq('kind'),
-            done(dd(false))
-          ),
-          when(
-            eq('since'),
-            done(dd(false))
-          ),
-          when(
-            eq('source'),
-            done(sourceFn)
-          ),
-          when(
-            eq('see'),
-            done(dd(true))
-          ),
-          when(
-            eq('deprecated'),
-            done(dd(true))
-          )
-        ], name),
-        dt({ class: 'details__tag' }, [
-          text(`${capitalize(name)}:`)
-        ])
-      ))
-    }
-
-    return acc
-  }, [], list)
-
-  return section({ class: 'details' }, [dl({}, reducedEl)])
+  return section({ class: 'details' }, [dl({}, items)])
 }
 
 module.exports = details

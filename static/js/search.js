@@ -1,12 +1,15 @@
 const search = document.getElementById('pinetFilter')
 const navItems = Array.from(document.querySelectorAll('.nav__item'))
-const functionSet = new Set(navItems.map(el => el.getAttribute('name').toLowerCase()))
+// Maps the lowercase name used for searching back to the real name, since ids are case sensitive
+const functionMap = new Map(navItems.map(el => {
+  const name = el.getAttribute('data-name')
+
+  return [name.toLowerCase(), name]
+}))
 
 /* eslint-disable no-labels */
 
-/* global hljs, location */
-
-hljs.initHighlightingOnLoad()
+/* global location */
 
 // FuzzySearch taken directly from kyanite!
 const fuzzySearch = (needle, haystack) => {
@@ -41,15 +44,15 @@ search.onkeyup = ({ key, target }) => {
   const search = target.value.toLowerCase()
 
   if (key.toLowerCase() === 'enter') {
-    if (functionSet.has(search)) {
-      location.hash = search
+    if (functionMap.has(search)) {
+      location.hash = functionMap.get(search)
 
       return true
     }
 
-    for (const func of functionSet) {
-      if (fuzzySearch(search, func)) {
-        location.hash = func
+    for (const [lower, name] of functionMap) {
+      if (fuzzySearch(search, lower)) {
+        location.hash = name
 
         return true
       }

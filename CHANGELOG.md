@@ -1,5 +1,86 @@
 # Changelog
 
+## v2.0.0
+
+### Breaking Changes
+
+- Pinet now requires Node.js 22.12 or newer (`marked` v18 is ESM only, and 22.12 is the first 22.x that can `require()` it without a flag)
+- `jsdoc` is now a peer dependency (`^4.0.0`) instead of something Pinet quietly expected to be installed
+  - Install it alongside Pinet: `npm i -D jsdoc pinet`
+- The published package now only contains the files Pinet needs at runtime
+  - Tests, configs, and other development files are no longer shipped
+- Plain text values are now HTML escaped when rendered
+  - This covers names, types, default values, page titles, the nav, and the details list (`since`, `see`, `category`, custom tags, etc.)
+  - Descriptions are still rendered as HTML, so markdown and inline HTML in them keep working
+  - The engine now escapes every attribute value, so `div({ title: 'a "b"' }, [])` renders `title="a &quot;b&quot;"`
+- Parameter table markup changed so every row lines up with its headers
+  - Every cell is always rendered (empty when a parameter has no value for that column)
+  - Every cell has the `params__td` class plus a `params__td--<column>` modifier
+  - The Default header class is now `params__th--defaultvalue` (was `params__th--default`) to match its cells
+  - Nullable and repeatable parameters show `<nullable>`, `<non-null>`, or `<repeatable>` in the Attributes column instead of a bare `true`
+  - The Optional column shows `Yes` instead of `true`
+- Nav items now use a `data-name` attribute instead of the invalid `name` attribute
+- A successful build is now quiet, like jsdoc itself
+  - "Write Finished" and the build time are only logged with jsdoc's `verbose` option, along with the rest of Pinet's progress logs
+  - "Write Finished" is only logged when the docs were written, a failed build logs its error (always) and the time it took (verbose)
+- Generated docs no longer load highlight.js from a CDN, all code is highlighted while the docs are built
+  - The README, changelog, and markdown descriptions now have their code blocks highlighted at build time like examples and source pages already were
+  - If you were customizing the docs and relied on the global `hljs` object in the browser, it is no longer there
+
+### New
+
+- The engine exports an `escape` function for turning plain text into safe HTML: `escape('<b>') // => '&lt;b&gt;'`
+
+### Changed
+
+- Swapped `standard` and `snazzy` for `neostandard`, using ESLint's flat config
+- Removed `npm-run-all`; tests now run through a single `npm test` command
+- Added a GitHub Actions workflow that lints, runs the tests on Node.js 22 and 24, and builds the example docs
+- All files now use LF line endings, enforced through `.gitattributes`
+- Updated development dependencies, clearing every `npm audit` warning
+- Simplified the details list into a lookup table instead of a chain of `when` checks
+- Simplified the parameter tables into a single list of column definitions
+- Removed the internal `_appendǃ` helper
+- Removed the unused `classes`, `hasHome`, and `verbose` values Pinet added to its own options (`verbose` is still read from jsdoc's `opts`)
+- Replaced `fs-extra` with Node's built in `node:fs/promises`, Pinet has one less dependency
+- Updated `marked` to v18, `highlight.js` to v11.12.0, and `kyanite` to v3.2.0
+- Highlighting is handled by one shared internal helper instead of being set up separately in each template
+- Swapped `tape` and `tap-on` for Node's built in test runner (`node:test`)
+  - The test suite now covers the engine, every template, the custom tags, the internal helpers, and full jsdoc builds through `publish`
+  - Holy bananas look at all them new tests!
+  - Added `npm run test:cov` for a coverage report using Node's built in coverage
+- The page nav builds its links without mutating an array
+- Rewrote the README for v2, covering setup, every option, the custom tags, the templating engine, and upgrading from v1
+
+### Fixed
+
+- `main` in `package.json` now points at `engine.js`, so `require('pinet')` and `import { compile } from 'pinet'` work instead of failing with `Cannot find module`
+- Every engine export can now be imported by name from an ES module, `import { div, p } from 'pinet'` used to fail with `Named export 'p' not found`
+- Parameter tables no longer drop the "Optional?" header when a later parameter isn't optional
+- Parameter tables no longer drop default values of `0`, `false`, or `''`
+- Types like `Array.<String>` no longer break the page HTML
+- Descriptions that are already HTML (like output from jsdoc's markdown plugin) are no longer wrapped in an extra `<p>`, which produced invalid nested `<p>` and `<ul>` elements
+- Doclets without a description no longer show `undefined`
+- Source pages now highlight the whole file instead of one character at a time, so keywords like `import` and `function` are actually highlighted
+- Multiple `@example` blocks on one function are now separated by a new line instead of running together
+- `@see` with multiple values now lists each one instead of joining them with commas
+- An empty `@deprecated` tag now shows `Yes` instead of `true`
+- Custom tags that aren't built in (like `recipe`) now show their value instead of the tag name as loose text
+- `@sig`, `@signature`, and `@recipe` no longer create empty lines for files with Windows (`\r\n`) line endings
+- Function titles separate multiple return types with `|` instead of `,`, matching the parameter tables
+- "See Source" links now open a new tab each time (`target="_blank"`) instead of reusing a tab named `__blank`
+- Pressing enter in the search now jumps to camelCase functions (like `addIndex`), the jump used a lowercased id before
+- A source file that can't be read now skips that one source page instead of stopping the rest of the docs from being written
+- A missing changelog file now reports the path it looked for, and other missing files are no longer reported as a missing changelog
+- Removed the deprecated `hljs.initHighlightingOnLoad()` call, which logged a deprecation warning in the browser and re-highlighted code that was already highlighted
+- Docs for projects without a `package.json` in their jsdoc sources no longer crash with `Cannot read properties of undefined (reading 'charAt')`
+  - jsdoc always adds a package entry, the page nav now falls back to `Unknown` and `v0.0.0` when it has no name or version
+- Source pages for names that aren't safe as file names no longer fail the build
+  - A name like `utils/math` (from `@module utils/math`) would try to write into a `utils` folder that doesn't exist, its page is now `utils_math.html`
+  - Any character other than letters, numbers, `_`, `.`, and `-` becomes `_` in source page file names and their "See Source" links
+- Errors while writing the docs now make jsdoc exit with a failure code instead of `0`
+  - `publish` now returns its promise, so jsdoc waits for every file to finish writing before it exits
+
 ## v1.2.1
 
 ### New

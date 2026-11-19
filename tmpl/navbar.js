@@ -1,5 +1,5 @@
 const { capitalize, concat, map } = require('kyanite')
-const { a, aside, compile, div, span, text, ul, p, li } = require('../engine')
+const { a, aside, compile, div, escape, span, ul, p, li } = require('../engine')
 
 /**
  * Builds out the navigation menu forthe functions
@@ -7,10 +7,10 @@ const { a, aside, compile, div, span, text, ul, p, li } = require('../engine')
  */
 function buildFunctionNav (nav) {
   return ul({ class: 'nav' }, map(({ name, cat }) => {
-    return li({ class: 'nav__item', 'data-cat': cat, name }, [
-      a({ class: 'nav__link', href: `documentation.html#${name}` }, [
-        span({ class: 'nav__name' }, [text(name)]),
-        span({ class: 'nav__type tag' }, [text(cat)])
+    return li({ class: 'nav__item', 'data-cat': cat ?? '', 'data-name': name }, [
+      a({ class: 'nav__link', href: `documentation.html#${encodeURIComponent(name)}` }, [
+        span({ class: 'nav__name' }, [escape(name)]),
+        ...(cat ? [span({ class: 'nav__type tag' }, [escape(cat)])] : [])
       ])
     ])
   }, nav))
@@ -23,27 +23,25 @@ function buildFunctionNav (nav) {
  * @param {Array} links A list of links to render on the page
  */
 function buildPageNav (packageJson, changelog, links = []) {
-  const pkg = packageJson || { name: 'Unknown', version: '0.0.0' }
+  // jsdoc always creates a package doclet, but it has no name or version without a package.json in the sources
+  const { name = 'Unknown', version = '0.0.0' } = packageJson || {}
   const defaultLinks = [
     { name: 'Home', link: 'index.html' },
-    { name: 'Documentation', link: 'documentation.html' }
+    { name: 'Documentation', link: 'documentation.html' },
+    ...(changelog ? [{ name: 'Changelog', link: 'changelog.html' }] : [])
   ]
-
-  if (changelog) {
-    defaultLinks.push({ name: 'Changelog', link: 'changelog.html' })
-  }
 
   return div({ class: 'pagenav' }, [
     p({ class: 'pagenav__title' }, [
-      compile('strong', {}, text(capitalize(pkg.name))),
-      span({ class: 'pagenav__version' }, [text(` v${pkg.version}`)])
+      compile('strong', {}, [escape(capitalize(name))]),
+      span({ class: 'pagenav__version' }, [escape(` v${version}`)])
     ]),
     p({ class: 'pagenav__links' }, map(({ name, link }) =>
       a({
         class: 'pagenav__link',
         href: link
       },
-      [text(name)]),
+      [escape(name)]),
     concat(links, defaultLinks)))
   ])
 }
